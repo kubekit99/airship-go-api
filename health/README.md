@@ -2,6 +2,7 @@
 
 ```bash
 swagger generate server --exclude-main -A cfgapisrv -t . -f ./swagger/swagger.yml
+swagger generate client -A cfgapisrv -t . -f ./swagger/swagger.yml
 ```
 
 Running the Config API Server
