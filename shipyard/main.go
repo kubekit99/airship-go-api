@@ -4,8 +4,8 @@ import (
 	"log"
 
 	loads "github.com/go-openapi/loads"
-	"github.com/kubekit99/airship-go-api/health/restapi"
-	"github.com/kubekit99/airship-go-api/health/restapi/operations"
+	"github.com/kubekit99/airship-go-api/shipyard/restapi"
+	"github.com/kubekit99/airship-go-api/shipyard/restapi/operations"
 )
 
 func main() {
@@ -15,7 +15,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewCfgapisrvAPI(swaggerSpec)
+	api := operations.NewShipyardAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
