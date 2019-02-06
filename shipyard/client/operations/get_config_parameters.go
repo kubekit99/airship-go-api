@@ -61,6 +61,11 @@ for the get config operation typically these are written to a http.Request
 */
 type GetConfigParams struct {
 
+	/*XAuthToken
+	  A fernet keystone bearer token used for authentication and authorization
+
+	*/
+	XAuthToken *string
 	/*Name
 	  defaults to all if not given
 
@@ -105,6 +110,17 @@ func (o *GetConfigParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithXAuthToken adds the xAuthToken to the get config params
+func (o *GetConfigParams) WithXAuthToken(xAuthToken *string) *GetConfigParams {
+	o.SetXAuthToken(xAuthToken)
+	return o
+}
+
+// SetXAuthToken adds the xAuthToken to the get config params
+func (o *GetConfigParams) SetXAuthToken(xAuthToken *string) {
+	o.XAuthToken = xAuthToken
+}
+
 // WithName adds the name to the get config params
 func (o *GetConfigParams) WithName(name *string) *GetConfigParams {
 	o.SetName(name)
@@ -123,6 +139,15 @@ func (o *GetConfigParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		return err
 	}
 	var res []error
+
+	if o.XAuthToken != nil {
+
+		// header param X-Auth-Token
+		if err := r.SetHeaderParam("X-Auth-Token", *o.XAuthToken); err != nil {
+			return err
+		}
+
+	}
 
 	if o.Name != nil {
 

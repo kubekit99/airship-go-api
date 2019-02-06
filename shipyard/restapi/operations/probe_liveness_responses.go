@@ -14,13 +14,13 @@ import (
 // ProbeLivenessOKCode is the HTTP code returned for type ProbeLivenessOK
 const ProbeLivenessOKCode int = 200
 
-/*ProbeLivenessOK returns a liveness state of the simulator
+/*ProbeLivenessOK Generic String answer
 
 swagger:response probeLivenessOK
 */
 type ProbeLivenessOK struct {
 
-	/*contains the actual liveness state as plain text
+	/*
 	  In: Body
 	*/
 	Payload string `json:"body,omitempty"`

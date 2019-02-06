@@ -14,13 +14,13 @@ import (
 // ProbeReadinessOKCode is the HTTP code returned for type ProbeReadinessOK
 const ProbeReadinessOKCode int = 200
 
-/*ProbeReadinessOK returns a readiness state of the simulator
+/*ProbeReadinessOK Generic String answer
 
 swagger:response probeReadinessOK
 */
 type ProbeReadinessOK struct {
 
-	/*contains the actual readiness state as plain text
+	/*
 	  In: Body
 	*/
 	Payload string `json:"body,omitempty"`

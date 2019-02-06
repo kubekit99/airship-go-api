@@ -31,6 +31,10 @@ type GetConfigParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
+	/*A fernet keystone bearer token used for authentication and authorization
+	  In: header
+	*/
+	XAuthToken *string
 	/*defaults to all if not given
 	  In: query
 	*/
@@ -48,6 +52,10 @@ func (o *GetConfigParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	qs := runtime.Values(r.URL.Query())
 
+	if err := o.bindXAuthToken(r.Header[http.CanonicalHeaderKey("X-Auth-Token")], true, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	qName, qhkName, _ := qs.GetOK("name")
 	if err := o.bindName(qName, qhkName, route.Formats); err != nil {
 		res = append(res, err)
@@ -56,6 +64,24 @@ func (o *GetConfigParams) BindRequest(r *http.Request, route *middleware.Matched
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+// bindXAuthToken binds and validates parameter XAuthToken from header.
+func (o *GetConfigParams) bindXAuthToken(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.XAuthToken = &raw
+
 	return nil
 }
 

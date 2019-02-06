@@ -25,6 +25,202 @@ type Client struct {
 }
 
 /*
+GetActionByActionID Returns the '/actions/{action-id}'
+*/
+func (a *Client) GetActionByActionID(params *GetActionByActionIDParams) (*GetActionByActionIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionByActionIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActionByActionId",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions/{action-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionByActionIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionByActionIDOK), nil
+
+}
+
+/*
+GetActionControl Returns the '/actions/{action-id}/control/{control-verb}'
+*/
+func (a *Client) GetActionControl(params *GetActionControlParams) (*GetActionControlOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionControlParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActionControl",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions/{action-id}/control/{control-verb}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionControlReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionControlOK), nil
+
+}
+
+/*
+GetActionStepByID Returns the '/actions/{action-id}/steps/{step-id}'
+*/
+func (a *Client) GetActionStepByID(params *GetActionStepByIDParams) (*GetActionStepByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionStepByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActionStepById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions/{action-id}/steps/{step-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionStepByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionStepByIDOK), nil
+
+}
+
+/*
+GetActionStepLogs Returns the '/actions/{action-id}/steps/{step-id}/logs'
+*/
+func (a *Client) GetActionStepLogs(params *GetActionStepLogsParams) (*GetActionStepLogsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionStepLogsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActionStepLogs",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions/{action-id}/steps/{step-id}/logs",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionStepLogsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionStepLogsOK), nil
+
+}
+
+/*
+GetActionValidationByID Returns the '/actions/{action-id}/validations/{validation-id}'
+*/
+func (a *Client) GetActionValidationByID(params *GetActionValidationByIDParams) (*GetActionValidationByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionValidationByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActionValidationById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions/{action-id}/validations/{validation-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionValidationByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionValidationByIDOK), nil
+
+}
+
+/*
+GetActions Returns the '/actions'
+*/
+func (a *Client) GetActions(params *GetActionsParams) (*GetActionsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetActionsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getActions",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/actions",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetActionsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetActionsOK), nil
+
+}
+
+/*
+GetCommitConfigDocs Returns the '/commitconfigdocs'
+*/
+func (a *Client) GetCommitConfigDocs(params *GetCommitConfigDocsParams) (*GetCommitConfigDocsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetCommitConfigDocsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getCommitConfigDocs",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/commitconfigdocs",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetCommitConfigDocsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetCommitConfigDocsOK), nil
+
+}
+
+/*
 GetConfig get config API
 */
 func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
@@ -38,7 +234,7 @@ func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
 		Method:             "GET",
 		PathPattern:        "/config",
 		ProducesMediaTypes: []string{"text/plain"},
-		ConsumesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &GetConfigReader{formats: a.formats},
@@ -53,30 +249,310 @@ func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
 }
 
 /*
-GetGreeting get greeting API
+GetConfigDocByID Returns the '/configdocs/{collection-id}'
 */
-func (a *Client) GetGreeting(params *GetGreetingParams) (*GetGreetingOK, error) {
+func (a *Client) GetConfigDocByID(params *GetConfigDocByIDParams) (*GetConfigDocByIDOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetGreetingParams()
+		params = NewGetConfigDocByIDParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "getGreeting",
+		ID:                 "getConfigDocById",
 		Method:             "GET",
-		PathPattern:        "/hello",
-		ProducesMediaTypes: []string{"text/plain"},
-		ConsumesMediaTypes: []string{""},
+		PathPattern:        "/api/v1.0/configdocs/{collection-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &GetGreetingReader{formats: a.formats},
+		Reader:             &GetConfigDocByIDReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetGreetingOK), nil
+	return result.(*GetConfigDocByIDOK), nil
+
+}
+
+/*
+GetConfigDocs Returns the '/configdocs'
+*/
+func (a *Client) GetConfigDocs(params *GetConfigDocsParams) (*GetConfigDocsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetConfigDocsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getConfigDocs",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/configdocs",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetConfigDocsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetConfigDocsOK), nil
+
+}
+
+/*
+GetHealth Returns the '/health'
+*/
+func (a *Client) GetHealth(params *GetHealthParams) (*GetHealthOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetHealthParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getHealth",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/health",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetHealthReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetHealthOK), nil
+
+}
+
+/*
+GetNoteDetailsByID Returns the '/notedetails/{note-id}'
+*/
+func (a *Client) GetNoteDetailsByID(params *GetNoteDetailsByIDParams) (*GetNoteDetailsByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetNoteDetailsByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getNoteDetailsById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/notedetails/{note-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetNoteDetailsByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetNoteDetailsByIDOK), nil
+
+}
+
+/*
+GetRenderedConfigDocs Returns the '/renderedconfigdocs'
+*/
+func (a *Client) GetRenderedConfigDocs(params *GetRenderedConfigDocsParams) (*GetRenderedConfigDocsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRenderedConfigDocsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getRenderedConfigDocs",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/renderedconfigdocs",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetRenderedConfigDocsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetRenderedConfigDocsOK), nil
+
+}
+
+/*
+GetSiteStatuses Returns the '/site_statuses'
+*/
+func (a *Client) GetSiteStatuses(params *GetSiteStatusesParams) (*GetSiteStatusesOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSiteStatusesParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSiteStatuses",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/site_statuses",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetSiteStatusesReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSiteStatusesOK), nil
+
+}
+
+/*
+GetStatus Returns the status of Tiller
+*/
+func (a *Client) GetStatus(params *GetStatusParams) (*GetStatusOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetStatusParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getStatus",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/status",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetStatusReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetStatusOK), nil
+
+}
+
+/*
+GetVersions Returns list of all supported versions of Shipyard. Currently this returns a static value.
+*/
+func (a *Client) GetVersions(params *GetVersionsParams) (*GetVersionsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetVersionsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getVersions",
+		Method:             "GET",
+		PathPattern:        "/versions",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetVersionsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetVersionsOK), nil
+
+}
+
+/*
+GetWorkflowByID Returns the '/workflows/{workflow-id}'
+*/
+func (a *Client) GetWorkflowByID(params *GetWorkflowByIDParams) (*GetWorkflowByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetWorkflowByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getWorkflowById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/workflows/{workflow-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetWorkflowByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetWorkflowByIDOK), nil
+
+}
+
+/*
+GetWorkflows Returns the '/workflows'
+*/
+func (a *Client) GetWorkflows(params *GetWorkflowsParams) (*GetWorkflowsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetWorkflowsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getWorkflows",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/workflows",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetWorkflowsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetWorkflowsOK), nil
+
+}
+
+/*
+PostApplyManifest Install or upgrade using an Shipyard manifest
+*/
+func (a *Client) PostApplyManifest(params *PostApplyManifestParams) (*PostApplyManifestOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostApplyManifestParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postApplyManifest",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/apply",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json", "application/x-yaml"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &PostApplyManifestReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostApplyManifestOK), nil
 
 }
 
@@ -94,7 +570,7 @@ func (a *Client) ProbeLiveness(params *ProbeLivenessParams) (*ProbeLivenessOK, e
 		Method:             "GET",
 		PathPattern:        "/liveness",
 		ProducesMediaTypes: []string{"text/plain"},
-		ConsumesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &ProbeLivenessReader{formats: a.formats},
@@ -122,7 +598,7 @@ func (a *Client) ProbeReadiness(params *ProbeReadinessParams) (*ProbeReadinessOK
 		Method:             "GET",
 		PathPattern:        "/readiness",
 		ProducesMediaTypes: []string{"text/plain"},
-		ConsumesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &ProbeReadinessReader{formats: a.formats},

@@ -42,7 +42,7 @@ func NewProbeReadinessOK() *ProbeReadinessOK {
 
 /*ProbeReadinessOK handles this case with default header values.
 
-returns a readiness state of the simulator
+Generic String answer
 */
 type ProbeReadinessOK struct {
 	Payload string

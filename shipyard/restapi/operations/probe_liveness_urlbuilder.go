@@ -38,6 +38,9 @@ func (o *ProbeLivenessURL) Build() (*url.URL, error) {
 	var _path = "/liveness"
 
 	_basePath := o._basePath
+	if _basePath == "" {
+		_basePath = "/"
+	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	return &_result, nil

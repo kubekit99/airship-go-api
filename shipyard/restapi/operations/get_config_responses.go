@@ -14,13 +14,13 @@ import (
 // GetConfigOKCode is the HTTP code returned for type GetConfigOK
 const GetConfigOKCode int = 200
 
-/*GetConfigOK returns a config file
+/*GetConfigOK Generic String answer
 
 swagger:response getConfigOK
 */
 type GetConfigOK struct {
 
-	/*contains the actual config as plain text
+	/*
 	  In: Body
 	*/
 	Payload string `json:"body,omitempty"`

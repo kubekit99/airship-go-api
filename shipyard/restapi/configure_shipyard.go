@@ -46,24 +46,13 @@ func configureAPI(api *operations.ShipyardAPI) http.Handler {
 			configfile := fmt.Sprintf("Config for %s!", name)
 			return operations.NewGetConfigOK().WithPayload(configfile)
 		})
-	api.GetGreetingHandler = operations.GetGreetingHandlerFunc(
-		func(params operations.GetGreetingParams) middleware.Responder {
-			name := swag.StringValue(params.Name)
-			if name == "" {
-				name = "World"
-			}
-
-			greeting := fmt.Sprintf("Hello, %s!", name)
-			return operations.NewGetGreetingOK().WithPayload(greeting)
-		})
-
 	api.ProbeLivenessHandler = operations.ProbeLivenessHandlerFunc(
 		func(params operations.ProbeLivenessParams) middleware.Responder {
-			return operations.NewProbeLivenessOK().WithPayload("kubesim alive")
+			return operations.NewProbeLivenessOK().WithPayload("shipyard alive")
 		})
 	api.ProbeReadinessHandler = operations.ProbeReadinessHandlerFunc(
 		func(params operations.ProbeReadinessParams) middleware.Responder {
-			return operations.NewProbeReadinessOK().WithPayload("kubesim ready")
+			return operations.NewProbeReadinessOK().WithPayload("shipyard ready")
 		})
 
 	api.ServerShutdown = func() {}

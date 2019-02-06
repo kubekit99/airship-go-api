@@ -18,12 +18,520 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
   "swagger": "2.0",
   "info": {
-    "title": "Shipyard API Simulation",
-    "version": "1.0.0"
+    "description": "Shipyard provides operators a way to deploy or upgrade collection of helm\ncharts using a single command.\n",
+    "title": "Shipyard",
+    "contact": {
+      "name": "Shipyard Github Repository",
+      "url": "https://github.com/openstack/airship-shipyard"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.1.0"
   },
+  "basePath": "/",
   "paths": {
+    "/api/v1.0/actions": {
+      "get": {
+        "description": "Returns the '/actions'",
+        "operationId": "getActions",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}'",
+        "operationId": "getActionByActionId",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/action-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/control/{control-verb}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/control/{control-verb}'",
+        "operationId": "getActionControl",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/action-id"
+          },
+          {
+            "$ref": "#/parameters/control-verb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/steps/{step-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/steps/{step-id}'",
+        "operationId": "getActionStepById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/action-id"
+          },
+          {
+            "$ref": "#/parameters/step-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/steps/{step-id}/logs": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/steps/{step-id}/logs'",
+        "operationId": "getActionStepLogs",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/action-id"
+          },
+          {
+            "$ref": "#/parameters/step-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/validations/{validation-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/validations/{validation-id}'",
+        "operationId": "getActionValidationById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/action-id"
+          },
+          {
+            "$ref": "#/parameters/validation-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/apply": {
+      "post": {
+        "description": "Install or upgrade using an Shipyard manifest",
+        "consumes": [
+          "application/json",
+          "application/x-yaml"
+        ],
+        "operationId": "postApplyManifest",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/content-type"
+          },
+          {
+            "description": "Body containing the manifest hrefs JSON or YAML and a set of overrides",
+            "name": "request_body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hrefs": {
+                  "description": "JSON or YAML representation of the manifest being processed.",
+                  "type": "object"
+                },
+                "overrides": {
+                  "description": "Set of overrides",
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-apply"
+          },
+          "400": {
+            "$ref": "#/responses/err-bad-request"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "415": {
+            "$ref": "#/responses/err-unsupported-media-type"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/commitconfigdocs": {
+      "get": {
+        "description": "Returns the '/commitconfigdocs'",
+        "operationId": "getCommitConfigDocs",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/configdocs": {
+      "get": {
+        "description": "Returns the '/configdocs'",
+        "operationId": "getConfigDocs",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/configdocs/{collection-id}": {
+      "get": {
+        "description": "Returns the '/configdocs/{collection-id}'",
+        "operationId": "getConfigDocById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/collection-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/health": {
+      "get": {
+        "description": "Returns the '/health'",
+        "operationId": "getHealth",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/notedetails/{note-id}": {
+      "get": {
+        "description": "Returns the '/notedetails/{note-id}'",
+        "operationId": "getNoteDetailsById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/note-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/renderedconfigdocs": {
+      "get": {
+        "description": "Returns the '/renderedconfigdocs'",
+        "operationId": "getRenderedConfigDocs",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/site_statuses": {
+      "get": {
+        "description": "Returns the '/site_statuses'",
+        "operationId": "getSiteStatuses",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/status": {
+      "get": {
+        "description": "Returns the status of Tiller",
+        "operationId": "getStatus",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-status"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/workflows": {
+      "get": {
+        "description": "Returns the '/workflows'",
+        "operationId": "getWorkflows",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/workflows/{workflow-id}": {
+      "get": {
+        "description": "Returns the '/workflows/{workflow-id}'",
+        "operationId": "getWorkflowById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/workflow-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -31,6 +539,9 @@ func init() {
         ],
         "operationId": "getConfig",
         "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
           {
             "type": "string",
             "description": "defaults to all if not given",
@@ -40,36 +551,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "returns a config file",
-            "schema": {
-              "description": "contains the actual config as plain text",
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/hello": {
-      "get": {
-        "produces": [
-          "text/plain"
-        ],
-        "operationId": "getGreeting",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "defaults to World if not given",
-            "name": "name",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a greeting",
-            "schema": {
-              "description": "contains the actual greeting as plain text",
-              "type": "string"
-            }
+            "$ref": "#/responses/response-get-simple"
           }
         }
       }
@@ -80,13 +562,14 @@ func init() {
           "text/plain"
         ],
         "operationId": "probeLiveness",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "returns a liveness state of the simulator",
-            "schema": {
-              "description": "contains the actual liveness state as plain text",
-              "type": "string"
-            }
+            "$ref": "#/responses/response-get-simple"
           }
         }
       }
@@ -97,26 +580,959 @@ func init() {
           "text/plain"
         ],
         "operationId": "probeReadiness",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "returns a readiness state of the simulator",
-            "schema": {
-              "description": "contains the actual readiness state as plain text",
+            "$ref": "#/responses/response-get-simple"
+          }
+        }
+      }
+    },
+    "/versions": {
+      "get": {
+        "description": "Returns list of all supported versions of Shipyard. Currently this returns a static value.",
+        "operationId": "getVersions",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-versions"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
               "type": "string"
             }
           }
         }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "action-id": {
+      "type": "string",
+      "name": "action-id",
+      "in": "path",
+      "required": true
+    },
+    "collection-id": {
+      "type": "string",
+      "name": "collection-id",
+      "in": "path",
+      "required": true
+    },
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "control-verb": {
+      "type": "string",
+      "name": "control-verb",
+      "in": "path",
+      "required": true
+    },
+    "note-id": {
+      "type": "string",
+      "name": "note-id",
+      "in": "path",
+      "required": true
+    },
+    "step-id": {
+      "type": "string",
+      "name": "step-id",
+      "in": "path",
+      "required": true
+    },
+    "validation-id": {
+      "type": "string",
+      "name": "validation-id",
+      "in": "path",
+      "required": true
+    },
+    "workflow-id": {
+      "type": "string",
+      "name": "workflow-id",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
       }
     }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
   "swagger": "2.0",
   "info": {
-    "title": "Shipyard API Simulation",
-    "version": "1.0.0"
+    "description": "Shipyard provides operators a way to deploy or upgrade collection of helm\ncharts using a single command.\n",
+    "title": "Shipyard",
+    "contact": {
+      "name": "Shipyard Github Repository",
+      "url": "https://github.com/openstack/airship-shipyard"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.1.0"
   },
+  "basePath": "/",
   "paths": {
+    "/api/v1.0/actions": {
+      "get": {
+        "description": "Returns the '/actions'",
+        "operationId": "getActions",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}'",
+        "operationId": "getActionByActionId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "action-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/control/{control-verb}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/control/{control-verb}'",
+        "operationId": "getActionControl",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "action-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "control-verb",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/steps/{step-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/steps/{step-id}'",
+        "operationId": "getActionStepById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "action-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "step-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/steps/{step-id}/logs": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/steps/{step-id}/logs'",
+        "operationId": "getActionStepLogs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "action-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "step-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/actions/{action-id}/validations/{validation-id}": {
+      "get": {
+        "description": "Returns the '/actions/{action-id}/validations/{validation-id}'",
+        "operationId": "getActionValidationById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "action-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "validation-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/apply": {
+      "post": {
+        "description": "Install or upgrade using an Shipyard manifest",
+        "consumes": [
+          "application/json",
+          "application/x-yaml"
+        ],
+        "operationId": "postApplyManifest",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "Content-Type",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body containing the manifest hrefs JSON or YAML and a set of overrides",
+            "name": "request_body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hrefs": {
+                  "description": "JSON or YAML representation of the manifest being processed.",
+                  "type": "object"
+                },
+                "overrides": {
+                  "description": "Set of overrides",
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response of application of an Shipyard manifest",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/applyresult"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "400 Bad request"
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "415": {
+            "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/commitconfigdocs": {
+      "get": {
+        "description": "Returns the '/commitconfigdocs'",
+        "operationId": "getCommitConfigDocs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/configdocs": {
+      "get": {
+        "description": "Returns the '/configdocs'",
+        "operationId": "getConfigDocs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/configdocs/{collection-id}": {
+      "get": {
+        "description": "Returns the '/configdocs/{collection-id}'",
+        "operationId": "getConfigDocById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "collection-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/health": {
+      "get": {
+        "description": "Returns the '/health'",
+        "operationId": "getHealth",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/notedetails/{note-id}": {
+      "get": {
+        "description": "Returns the '/notedetails/{note-id}'",
+        "operationId": "getNoteDetailsById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "note-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/renderedconfigdocs": {
+      "get": {
+        "description": "Returns the '/renderedconfigdocs'",
+        "operationId": "getRenderedConfigDocs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/site_statuses": {
+      "get": {
+        "description": "Returns the '/site_statuses'",
+        "operationId": "getSiteStatuses",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/status": {
+      "get": {
+        "description": "Returns the status of Tiller",
+        "operationId": "getStatus",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response of Tiller statuses",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/status"
+                }
+              ],
+              "example": {
+                "tiller": {
+                  "state": true,
+                  "version": "0.1.0"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/workflows": {
+      "get": {
+        "description": "Returns the '/workflows'",
+        "operationId": "getWorkflows",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/workflows/{workflow-id}": {
+      "get": {
+        "description": "Returns the '/workflows/{workflow-id}'",
+        "operationId": "getWorkflowById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "workflow-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -126,6 +1542,12 @@ func init() {
         "parameters": [
           {
             "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
             "description": "defaults to all if not given",
             "name": "name",
             "in": "query"
@@ -133,35 +1555,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "returns a config file",
+            "description": "Generic String answer",
             "schema": {
-              "description": "contains the actual config as plain text",
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/hello": {
-      "get": {
-        "produces": [
-          "text/plain"
-        ],
-        "operationId": "getGreeting",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "defaults to World if not given",
-            "name": "name",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a greeting",
-            "schema": {
-              "description": "contains the actual greeting as plain text",
-              "type": "string"
+              "type": "string",
+              "example": "simple"
             }
           }
         }
@@ -173,12 +1570,20 @@ func init() {
           "text/plain"
         ],
         "operationId": "probeLiveness",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "returns a liveness state of the simulator",
+            "description": "Generic String answer",
             "schema": {
-              "description": "contains the actual liveness state as plain text",
-              "type": "string"
+              "type": "string",
+              "example": "simple"
             }
           }
         }
@@ -190,15 +1595,290 @@ func init() {
           "text/plain"
         ],
         "operationId": "probeReadiness",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "returns a readiness state of the simulator",
+            "description": "Generic String answer",
             "schema": {
-              "description": "contains the actual readiness state as plain text",
+              "type": "string",
+              "example": "simple"
+            }
+          }
+        }
+      }
+    },
+    "/versions": {
+      "get": {
+        "description": "Returns list of all supported versions of Shipyard. Currently this returns a static value.",
+        "operationId": "getVersions",
+        "responses": {
+          "200": {
+            "description": "Response of getting Shipyard versions",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/versions"
+                }
+              ],
+              "example": {
+                "v1.0": {
+                  "path": "/api/v1.0",
+                  "status": "stable"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
               "type": "string"
             }
           }
         }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "action-id": {
+      "type": "string",
+      "name": "action-id",
+      "in": "path",
+      "required": true
+    },
+    "collection-id": {
+      "type": "string",
+      "name": "collection-id",
+      "in": "path",
+      "required": true
+    },
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "control-verb": {
+      "type": "string",
+      "name": "control-verb",
+      "in": "path",
+      "required": true
+    },
+    "note-id": {
+      "type": "string",
+      "name": "note-id",
+      "in": "path",
+      "required": true
+    },
+    "step-id": {
+      "type": "string",
+      "name": "step-id",
+      "in": "path",
+      "required": true
+    },
+    "validation-id": {
+      "type": "string",
+      "name": "validation-id",
+      "in": "path",
+      "required": true
+    },
+    "workflow-id": {
+      "type": "string",
+      "name": "workflow-id",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
       }
     }
   }

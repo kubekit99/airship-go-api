@@ -20,7 +20,7 @@ import (
 // NewProbeLivenessParams creates a new ProbeLivenessParams object
 // with the default values initialized.
 func NewProbeLivenessParams() *ProbeLivenessParams {
-
+	var ()
 	return &ProbeLivenessParams{
 
 		timeout: cr.DefaultTimeout,
@@ -30,7 +30,7 @@ func NewProbeLivenessParams() *ProbeLivenessParams {
 // NewProbeLivenessParamsWithTimeout creates a new ProbeLivenessParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewProbeLivenessParamsWithTimeout(timeout time.Duration) *ProbeLivenessParams {
-
+	var ()
 	return &ProbeLivenessParams{
 
 		timeout: timeout,
@@ -40,7 +40,7 @@ func NewProbeLivenessParamsWithTimeout(timeout time.Duration) *ProbeLivenessPara
 // NewProbeLivenessParamsWithContext creates a new ProbeLivenessParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewProbeLivenessParamsWithContext(ctx context.Context) *ProbeLivenessParams {
-
+	var ()
 	return &ProbeLivenessParams{
 
 		Context: ctx,
@@ -50,7 +50,7 @@ func NewProbeLivenessParamsWithContext(ctx context.Context) *ProbeLivenessParams
 // NewProbeLivenessParamsWithHTTPClient creates a new ProbeLivenessParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewProbeLivenessParamsWithHTTPClient(client *http.Client) *ProbeLivenessParams {
-
+	var ()
 	return &ProbeLivenessParams{
 		HTTPClient: client,
 	}
@@ -60,6 +60,13 @@ func NewProbeLivenessParamsWithHTTPClient(client *http.Client) *ProbeLivenessPar
 for the probe liveness operation typically these are written to a http.Request
 */
 type ProbeLivenessParams struct {
+
+	/*XAuthToken
+	  A fernet keystone bearer token used for authentication and authorization
+
+	*/
+	XAuthToken *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -98,6 +105,17 @@ func (o *ProbeLivenessParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithXAuthToken adds the xAuthToken to the probe liveness params
+func (o *ProbeLivenessParams) WithXAuthToken(xAuthToken *string) *ProbeLivenessParams {
+	o.SetXAuthToken(xAuthToken)
+	return o
+}
+
+// SetXAuthToken adds the xAuthToken to the probe liveness params
+func (o *ProbeLivenessParams) SetXAuthToken(xAuthToken *string) {
+	o.XAuthToken = xAuthToken
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ProbeLivenessParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -105,6 +123,15 @@ func (o *ProbeLivenessParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 		return err
 	}
 	var res []error
+
+	if o.XAuthToken != nil {
+
+		// header param X-Auth-Token
+		if err := r.SetHeaderParam("X-Auth-Token", *o.XAuthToken); err != nil {
+			return err
+		}
+
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

@@ -1,38 +1,49 @@
----
-swagger: '2.0'
+swagger: "2.0"
 info:
-  version: 1.0.0
-  title: Shipyard API Simulation
+  title: Shipyard
+  version: 0.1.0
+  description: |
+    Shipyard provides operators a way to deploy or upgrade collection of helm
+    charts using a single command.
+  contact:
+    name: Shipyard Github Repository
+    url: https://github.com/openstack/airship-shipyard
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /
+schemes:
+  - http
+# - https
+consumes:
+  - application/json
 paths:
   /liveness:
     get:
       produces:
         - text/plain
-      parameters: []
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
       operationId: probeLiveness
       responses:
-        200:
-          description: returns a liveness state of the simulator
-          schema:
-              type: string
-              description: contains the actual liveness state as plain text
+        '200':
+          $ref: "#/responses/response-get-simple"
   /readiness:
     get:
       produces:
         - text/plain
-      parameters: []
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
       operationId: probeReadiness
       responses:
-        200:
-          description: returns a readiness state of the simulator
-          schema:
-              type: string
-              description: contains the actual readiness state as plain text
+        '200':
+          $ref: "#/responses/response-get-simple"
   /config:
     get:
       produces:
         - text/plain
       parameters:
+        - $ref: "#/parameters/x-auth-token"
         - name: name
           required: false
           type: string
@@ -40,25 +51,470 @@ paths:
           description: defaults to all if not given
       operationId: getConfig
       responses:
-        200:
-          description: returns a config file
-          schema:
-              type: string
-              description: contains the actual config as plain text
-  /hello:
+        '200':
+          $ref: "#/responses/response-get-simple"
+  /versions:
     get:
-      produces:
-        - text/plain
-      parameters:
-        - name: name
-          required: false
-          type: string
-          in: query
-          description: defaults to World if not given
-      operationId: getGreeting
+      description: Returns list of all supported versions of Shipyard. Currently this returns a static value.
+      operationId: getVersions
       responses:
-        200:
-          description: returns a greeting
+        '200':
+          $ref: "#/responses/response-get-versions"
+  /api/v1.0/health:
+    get:
+      description: Returns the '/health'
+      operationId: getHealth
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    get:
+      description: Returns the '/actions'
+      operationId: getActions
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}:
+    get:
+      description: Returns the '/actions/{action-id}'
+      operationId: getActionByActionId
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}/control/{control-verb}:
+    get:
+      description: Returns the '/actions/{action-id}/control/{control-verb}'
+      operationId: getActionControl
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+        - $ref: "#/parameters/control-verb"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}/steps/{step-id}:
+    get:
+      description: Returns the '/actions/{action-id}/steps/{step-id}'
+      operationId: getActionStepById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+        - $ref: "#/parameters/step-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}/steps/{step-id}/logs:
+    get:
+      description: Returns the '/actions/{action-id}/steps/{step-id}/logs'
+      operationId: getActionStepLogs
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+        - $ref: "#/parameters/step-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}/validations/{validation-id}:
+    get:
+      description: Returns the '/actions/{action-id}/validations/{validation-id}'
+      operationId: getActionValidationById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+        - $ref: "#/parameters/validation-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/configdocs:
+    get:
+      description: Returns the '/configdocs'
+      operationId: getConfigDocs
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/configdocs/{collection-id}:
+    get:
+      description: Returns the '/configdocs/{collection-id}'
+      operationId: getConfigDocById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/collection-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/commitconfigdocs:
+    get:
+      description: Returns the '/commitconfigdocs'
+      operationId: getCommitConfigDocs
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/notedetails/{note-id}:
+    get:
+      description: Returns the '/notedetails/{note-id}'
+      operationId: getNoteDetailsById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/note-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/renderedconfigdocs:
+    get:
+      description: Returns the '/renderedconfigdocs'
+      operationId: getRenderedConfigDocs
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/workflows:
+    get:
+      description: Returns the '/workflows'
+      operationId: getWorkflows
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/workflows/{workflow-id}:
+    get:
+      description: Returns the '/workflows/{workflow-id}'
+      operationId: getWorkflowById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/workflow-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/site_statuses:
+    get:
+      description: Returns the '/site_statuses'
+      operationId: getSiteStatuses
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/status:
+    get:
+      description: Returns the status of Tiller
+      operationId: getStatus
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-status"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/apply:
+    post:
+      description: Install or upgrade using an Shipyard manifest
+      operationId: postApplyManifest
+      consumes:
+        - application/json
+        - application/x-yaml
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/content-type"
+        - name: request_body
+          in: body
+          description: Body containing the manifest hrefs JSON or YAML and a set of overrides
           schema:
+            type: object
+            properties:
+              hrefs:
+                type: object
+                description: JSON or YAML representation of the manifest being processed.
+              overrides:
+                type: object
+                description: Set of overrides
+      responses:
+        '200':
+          $ref: "#/responses/response-post-apply"
+        '400':
+          $ref: "#/responses/err-bad-request"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '415':
+          $ref: "#/responses/err-unsupported-media-type"
+        '500':
+          $ref: "#/responses/err-server-error"
+parameters:
+  x-auth-token:
+    in: header
+    name: X-Auth-Token
+    required: false
+    type: string
+    description: A fernet keystone bearer token used for authentication and authorization
+  content-type:
+    in: header
+    name: Content-Type
+    required: true
+    type: string
+  action-id:
+    in: path
+    name: action-id
+    required: true
+    type: string
+  step-id:
+    in: path
+    name: step-id
+    required: true
+    type: string
+  collection-id:
+    in: path
+    name: collection-id
+    required: true
+    type: string
+  validation-id:
+    in: path
+    name: validation-id
+    required: true
+    type: string
+  control-verb:
+    in: path
+    name: control-verb
+    required: true
+    type: string
+  workflow-id:
+    in: path
+    name: workflow-id
+    required: true
+    type: string
+  note-id:
+    in: path
+    name: note-id
+    required: true
+    type: string
+
+responses:
+  # HTTP error responses
+  err-bad-request:
+    description: 400 Bad request
+  err-no-auth:
+    description: 401 Not authorized
+  err-forbidden:
+    description: 403 Forbidden
+  err-not-found:
+    description: 404 Not found
+  err-not-allowed:
+    description: 405 Method not allowed
+  err-unsupported-media-type:
+    description: |
+      415 Unsupported Media Type
+
+      Mime type needs to be application/json or application/x-yaml.
+  err-server-error:
+    description: 500 Internal Server Error
+  # API responses
+  response-post-apply:
+    description: Response of application of an Shipyard manifest
+    schema:
+      allOf:
+        - $ref: "#/definitions/applyresult"
+  response-get-versions:
+    description: Response of getting Shipyard versions
+    schema:
+      allOf:
+      - $ref: "#/definitions/versions"
+      example:
+        v1.0:
+          path: /api/v1.0
+          status: stable
+  response-get-status:
+    description: Response of Tiller statuses
+    schema:
+      allOf:
+        - $ref: "#/definitions/status"
+      example:
+        tiller:
+          state: True
+          version: 0.1.0
+  response-get-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+definitions:
+  status:
+    type: object
+    properties:
+      tiller:
+        type: object
+        properties:
+          state:
+            type: boolean
+          version:
+            type: string
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+  simple:
+    type: string
+  detail:
+    type: object
+    properties:
+      errorCount:
+        type: integer
+      messageList:
+        type: array
+        items:
+          type: string
+  applyresult:
+    type: object
+    properties:
+      message:
+        type: object
+        properties:
+          install:
+            type: array
+            items:
               type: string
-              description: contains the actual greeting as plain text
+          upgrade:
+            type: array
+            items:
+              type: string
+          diff:
+            type: object
+            additionalProperties:
+              type: string
+  versions:
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/version"
+  version:
+    type: object
+    properties:
+      path:
+        type: string
+      status:
+        type: string
+  base-response:
+    type: object
+    properties:
+      kind:
+        type: string
+      apiVersion:
+        type: string
+      reason:
+        type: string
+      metadata:
+        $ref: "#/definitions/metadata"
+      details:
+        $ref: "#/definitions/detail"
+      status:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer

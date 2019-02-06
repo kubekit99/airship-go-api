@@ -27,8 +27,8 @@ func main() {
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "Shipyard API Simulation"
-	parser.LongDescription = swaggerSpec.Spec().Info.Description
+	parser.ShortDescription = "Shipyard"
+	parser.LongDescription = "Shipyard provides operators a way to deploy or upgrade collection of helm\ncharts using a single command.\n"
 
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {

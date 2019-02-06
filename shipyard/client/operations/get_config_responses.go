@@ -42,7 +42,7 @@ func NewGetConfigOK() *GetConfigOK {
 
 /*GetConfigOK handles this case with default header values.
 
-returns a config file
+Generic String answer
 */
 type GetConfigOK struct {
 	Payload string

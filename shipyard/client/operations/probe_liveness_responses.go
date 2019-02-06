@@ -42,7 +42,7 @@ func NewProbeLivenessOK() *ProbeLivenessOK {
 
 /*ProbeLivenessOK handles this case with default header values.
 
-returns a liveness state of the simulator
+Generic String answer
 */
 type ProbeLivenessOK struct {
 	Payload string

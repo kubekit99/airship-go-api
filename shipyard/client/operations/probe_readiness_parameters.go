@@ -20,7 +20,7 @@ import (
 // NewProbeReadinessParams creates a new ProbeReadinessParams object
 // with the default values initialized.
 func NewProbeReadinessParams() *ProbeReadinessParams {
-
+	var ()
 	return &ProbeReadinessParams{
 
 		timeout: cr.DefaultTimeout,
@@ -30,7 +30,7 @@ func NewProbeReadinessParams() *ProbeReadinessParams {
 // NewProbeReadinessParamsWithTimeout creates a new ProbeReadinessParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewProbeReadinessParamsWithTimeout(timeout time.Duration) *ProbeReadinessParams {
-
+	var ()
 	return &ProbeReadinessParams{
 
 		timeout: timeout,
@@ -40,7 +40,7 @@ func NewProbeReadinessParamsWithTimeout(timeout time.Duration) *ProbeReadinessPa
 // NewProbeReadinessParamsWithContext creates a new ProbeReadinessParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewProbeReadinessParamsWithContext(ctx context.Context) *ProbeReadinessParams {
-
+	var ()
 	return &ProbeReadinessParams{
 
 		Context: ctx,
@@ -50,7 +50,7 @@ func NewProbeReadinessParamsWithContext(ctx context.Context) *ProbeReadinessPara
 // NewProbeReadinessParamsWithHTTPClient creates a new ProbeReadinessParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewProbeReadinessParamsWithHTTPClient(client *http.Client) *ProbeReadinessParams {
-
+	var ()
 	return &ProbeReadinessParams{
 		HTTPClient: client,
 	}
@@ -60,6 +60,13 @@ func NewProbeReadinessParamsWithHTTPClient(client *http.Client) *ProbeReadinessP
 for the probe readiness operation typically these are written to a http.Request
 */
 type ProbeReadinessParams struct {
+
+	/*XAuthToken
+	  A fernet keystone bearer token used for authentication and authorization
+
+	*/
+	XAuthToken *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -98,6 +105,17 @@ func (o *ProbeReadinessParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithXAuthToken adds the xAuthToken to the probe readiness params
+func (o *ProbeReadinessParams) WithXAuthToken(xAuthToken *string) *ProbeReadinessParams {
+	o.SetXAuthToken(xAuthToken)
+	return o
+}
+
+// SetXAuthToken adds the xAuthToken to the probe readiness params
+func (o *ProbeReadinessParams) SetXAuthToken(xAuthToken *string) {
+	o.XAuthToken = xAuthToken
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ProbeReadinessParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -105,6 +123,15 @@ func (o *ProbeReadinessParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 	var res []error
+
+	if o.XAuthToken != nil {
+
+		// header param X-Auth-Token
+		if err := r.SetHeaderParam("X-Auth-Token", *o.XAuthToken); err != nil {
+			return err
+		}
+
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
