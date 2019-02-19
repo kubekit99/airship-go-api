@@ -25,6 +25,146 @@ type Client struct {
 }
 
 /*
+CommitRevision Create a batch of documents specified in the request body, whereby a new revision is created.
+*/
+func (a *Client) CommitRevision(params *CommitRevisionParams) (*CommitRevisionOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewCommitRevisionParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "commitRevision",
+		Method:             "PUT",
+		PathPattern:        "/api/v1.0/buckets/{bucket-name}/documents",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &CommitRevisionReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*CommitRevisionOK), nil
+
+}
+
+/*
+DeleteAllRevisions Delete all revisions. Warning this is equivalent to purging the database.
+*/
+func (a *Client) DeleteAllRevisions(params *DeleteAllRevisionsParams) (*DeleteAllRevisionsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteAllRevisionsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "deleteAllRevisions",
+		Method:             "DELETE",
+		PathPattern:        "/api/v1.0/revisions",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &DeleteAllRevisionsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteAllRevisionsOK), nil
+
+}
+
+/*
+DeleteAllTags Delete all tags for a revision
+*/
+func (a *Client) DeleteAllTags(params *DeleteAllTagsParams) (*DeleteAllTagsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteAllTagsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "deleteAllTags",
+		Method:             "DELETE",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/tags",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &DeleteAllTagsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteAllTagsOK), nil
+
+}
+
+/*
+DeleteRevisionTagByID Delete a revision tag.
+*/
+func (a *Client) DeleteRevisionTagByID(params *DeleteRevisionTagByIDParams) (*DeleteRevisionTagByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteRevisionTagByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "deleteRevisionTagById",
+		Method:             "DELETE",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/tags/{tag}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &DeleteRevisionTagByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteRevisionTagByIDOK), nil
+
+}
+
+/*
+GetAllValidations List all validations that have been reported for a revision. Also lists the validation entries for a particular validation.
+*/
+func (a *Client) GetAllValidations(params *GetAllValidationsParams) (*GetAllValidationsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetAllValidationsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getAllValidations",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/validations",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetAllValidationsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetAllValidationsOK), nil
+
+}
+
+/*
 GetConfig get config API
 */
 func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
@@ -53,30 +193,142 @@ func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
 }
 
 /*
-GetGreeting get greeting API
+GetDocumentsByID List cleartext documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.
 */
-func (a *Client) GetGreeting(params *GetGreetingParams) (*GetGreetingOK, error) {
+func (a *Client) GetDocumentsByID(params *GetDocumentsByIDParams) (*GetDocumentsByIDOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetGreetingParams()
+		params = NewGetDocumentsByIDParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "getGreeting",
+		ID:                 "getDocumentsById",
 		Method:             "GET",
-		PathPattern:        "/hello",
-		ProducesMediaTypes: []string{"text/plain"},
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/documents",
+		ProducesMediaTypes: []string{""},
 		ConsumesMediaTypes: []string{""},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &GetGreetingReader{formats: a.formats},
+		Reader:             &GetDocumentsByIDReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetGreetingOK), nil
+	return result.(*GetDocumentsByIDOK), nil
+
+}
+
+/*
+GetRenderedDocumentsByID List encrypted documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.  Only enforced after ``list_cleartext_documents`` passes.  Conditionally enforced for the endpoints below if any of the documents in the request body have a ``metadata.storagePolicy`` of  encrypted . If policy enforcement fails, encrypted documents are excluded from the response.
+*/
+func (a *Client) GetRenderedDocumentsByID(params *GetRenderedDocumentsByIDParams) (*GetRenderedDocumentsByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRenderedDocumentsByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getRenderedDocumentsById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/rendered-documents",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetRenderedDocumentsByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetRenderedDocumentsByIDOK), nil
+
+}
+
+/*
+GetRevisionByID Show details for a revisions.
+*/
+func (a *Client) GetRevisionByID(params *GetRevisionByIDParams) (*GetRevisionByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRevisionByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getRevisionById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetRevisionByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetRevisionByIDOK), nil
+
+}
+
+/*
+GetValidationByID Gets the full details of a particular validation entry, including all posted error details.
+*/
+func (a *Client) GetValidationByID(params *GetValidationByIDParams) (*GetValidationByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetValidationByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getValidationById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/validations/{validation-name}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetValidationByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetValidationByIDOK), nil
+
+}
+
+/*
+GetValidationEntryByID Gets the full details of a particular validation entry, including all posted error details.
+*/
+func (a *Client) GetValidationEntryByID(params *GetValidationEntryByIDParams) (*GetValidationEntryByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetValidationEntryByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getValidationEntryById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/validations/{validation-name}/entries/{entry-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetValidationEntryByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetValidationEntryByIDOK), nil
 
 }
 
@@ -133,6 +385,90 @@ func (a *Client) ProbeReadiness(params *ProbeReadinessParams) (*ProbeReadinessOK
 		return nil, err
 	}
 	return result.(*ProbeReadinessOK), nil
+
+}
+
+/*
+RollbackRevision Roll back a revision to a previous one in the revision history, whereby the target revision s documents are re-created for the new revision.
+*/
+func (a *Client) RollbackRevision(params *RollbackRevisionParams) (*RollbackRevisionOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewRollbackRevisionParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "rollbackRevision",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/rollback/{target-revision-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &RollbackRevisionReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*RollbackRevisionOK), nil
+
+}
+
+/*
+ShowRevisionDeepDiff Show revision deep diff between two revisions.
+*/
+func (a *Client) ShowRevisionDeepDiff(params *ShowRevisionDeepDiffParams) (*ShowRevisionDeepDiffOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewShowRevisionDeepDiffParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "showRevisionDeepDiff",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/deepdiff/{comparison-revision-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ShowRevisionDeepDiffReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ShowRevisionDeepDiffOK), nil
+
+}
+
+/*
+ShowRevisionDiff Show revision diff between two revisions.
+*/
+func (a *Client) ShowRevisionDiff(params *ShowRevisionDiffParams) (*ShowRevisionDiffOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewShowRevisionDiffParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "showRevisionDiff",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/revisions/{revision-id}/diff/{comparison-revision-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ShowRevisionDiffReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ShowRevisionDiffOK), nil
 
 }
 

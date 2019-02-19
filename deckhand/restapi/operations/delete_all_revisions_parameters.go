@@ -9,47 +9,43 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-// NewGetGreetingParams creates a new GetGreetingParams object
+// NewDeleteAllRevisionsParams creates a new DeleteAllRevisionsParams object
 // no default values defined in spec.
-func NewGetGreetingParams() GetGreetingParams {
+func NewDeleteAllRevisionsParams() DeleteAllRevisionsParams {
 
-	return GetGreetingParams{}
+	return DeleteAllRevisionsParams{}
 }
 
-// GetGreetingParams contains all the bound params for the get greeting operation
+// DeleteAllRevisionsParams contains all the bound params for the delete all revisions operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters getGreeting
-type GetGreetingParams struct {
+// swagger:parameters deleteAllRevisions
+type DeleteAllRevisionsParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*defaults to World if not given
-	  In: query
+	/*A fernet keystone bearer token used for authentication and authorization
+	  In: header
 	*/
-	Name *string
+	XAuthToken *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewGetGreetingParams() beforehand.
-func (o *GetGreetingParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewDeleteAllRevisionsParams() beforehand.
+func (o *DeleteAllRevisionsParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
 
-	qs := runtime.Values(r.URL.Query())
-
-	qName, qhkName, _ := qs.GetOK("name")
-	if err := o.bindName(qName, qhkName, route.Formats); err != nil {
+	if err := o.bindXAuthToken(r.Header[http.CanonicalHeaderKey("X-Auth-Token")], true, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -59,20 +55,20 @@ func (o *GetGreetingParams) BindRequest(r *http.Request, route *middleware.Match
 	return nil
 }
 
-// bindName binds and validates parameter Name from query.
-func (o *GetGreetingParams) bindName(rawData []string, hasKey bool, formats strfmt.Registry) error {
+// bindXAuthToken binds and validates parameter XAuthToken from header.
+func (o *DeleteAllRevisionsParams) bindXAuthToken(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
 	// Required: false
-	// AllowEmptyValue: false
+
 	if raw == "" { // empty values pass all other validations
 		return nil
 	}
 
-	o.Name = &raw
+	o.XAuthToken = &raw
 
 	return nil
 }

@@ -37,17 +37,53 @@ func NewDeckhandAPI(spec *loads.Document) *DeckhandAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		TxtProducer:         runtime.TextProducer(),
+		CommitRevisionHandler: CommitRevisionHandlerFunc(func(params CommitRevisionParams) middleware.Responder {
+			return middleware.NotImplemented("operation CommitRevision has not yet been implemented")
+		}),
+		DeleteAllRevisionsHandler: DeleteAllRevisionsHandlerFunc(func(params DeleteAllRevisionsParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteAllRevisions has not yet been implemented")
+		}),
+		DeleteAllTagsHandler: DeleteAllTagsHandlerFunc(func(params DeleteAllTagsParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteAllTags has not yet been implemented")
+		}),
+		DeleteRevisionTagByIDHandler: DeleteRevisionTagByIDHandlerFunc(func(params DeleteRevisionTagByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteRevisionTagByID has not yet been implemented")
+		}),
+		GetAllValidationsHandler: GetAllValidationsHandlerFunc(func(params GetAllValidationsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetAllValidations has not yet been implemented")
+		}),
 		GetConfigHandler: GetConfigHandlerFunc(func(params GetConfigParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetConfig has not yet been implemented")
 		}),
-		GetGreetingHandler: GetGreetingHandlerFunc(func(params GetGreetingParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetGreeting has not yet been implemented")
+		GetDocumentsByIDHandler: GetDocumentsByIDHandlerFunc(func(params GetDocumentsByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetDocumentsByID has not yet been implemented")
+		}),
+		GetRenderedDocumentsByIDHandler: GetRenderedDocumentsByIDHandlerFunc(func(params GetRenderedDocumentsByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetRenderedDocumentsByID has not yet been implemented")
+		}),
+		GetRevisionByIDHandler: GetRevisionByIDHandlerFunc(func(params GetRevisionByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetRevisionByID has not yet been implemented")
+		}),
+		GetValidationByIDHandler: GetValidationByIDHandlerFunc(func(params GetValidationByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetValidationByID has not yet been implemented")
+		}),
+		GetValidationEntryByIDHandler: GetValidationEntryByIDHandlerFunc(func(params GetValidationEntryByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetValidationEntryByID has not yet been implemented")
 		}),
 		ProbeLivenessHandler: ProbeLivenessHandlerFunc(func(params ProbeLivenessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeLiveness has not yet been implemented")
 		}),
 		ProbeReadinessHandler: ProbeReadinessHandlerFunc(func(params ProbeReadinessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeReadiness has not yet been implemented")
+		}),
+		RollbackRevisionHandler: RollbackRevisionHandlerFunc(func(params RollbackRevisionParams) middleware.Responder {
+			return middleware.NotImplemented("operation RollbackRevision has not yet been implemented")
+		}),
+		ShowRevisionDeepDiffHandler: ShowRevisionDeepDiffHandlerFunc(func(params ShowRevisionDeepDiffParams) middleware.Responder {
+			return middleware.NotImplemented("operation ShowRevisionDeepDiff has not yet been implemented")
+		}),
+		ShowRevisionDiffHandler: ShowRevisionDiffHandlerFunc(func(params ShowRevisionDiffParams) middleware.Responder {
+			return middleware.NotImplemented("operation ShowRevisionDiff has not yet been implemented")
 		}),
 	}
 }
@@ -80,14 +116,38 @@ type DeckhandAPI struct {
 	// TxtProducer registers a producer for a "text/plain" mime type
 	TxtProducer runtime.Producer
 
+	// CommitRevisionHandler sets the operation handler for the commit revision operation
+	CommitRevisionHandler CommitRevisionHandler
+	// DeleteAllRevisionsHandler sets the operation handler for the delete all revisions operation
+	DeleteAllRevisionsHandler DeleteAllRevisionsHandler
+	// DeleteAllTagsHandler sets the operation handler for the delete all tags operation
+	DeleteAllTagsHandler DeleteAllTagsHandler
+	// DeleteRevisionTagByIDHandler sets the operation handler for the delete revision tag by Id operation
+	DeleteRevisionTagByIDHandler DeleteRevisionTagByIDHandler
+	// GetAllValidationsHandler sets the operation handler for the get all validations operation
+	GetAllValidationsHandler GetAllValidationsHandler
 	// GetConfigHandler sets the operation handler for the get config operation
 	GetConfigHandler GetConfigHandler
-	// GetGreetingHandler sets the operation handler for the get greeting operation
-	GetGreetingHandler GetGreetingHandler
+	// GetDocumentsByIDHandler sets the operation handler for the get documents by Id operation
+	GetDocumentsByIDHandler GetDocumentsByIDHandler
+	// GetRenderedDocumentsByIDHandler sets the operation handler for the get rendered documents by Id operation
+	GetRenderedDocumentsByIDHandler GetRenderedDocumentsByIDHandler
+	// GetRevisionByIDHandler sets the operation handler for the get revision by Id operation
+	GetRevisionByIDHandler GetRevisionByIDHandler
+	// GetValidationByIDHandler sets the operation handler for the get validation by Id operation
+	GetValidationByIDHandler GetValidationByIDHandler
+	// GetValidationEntryByIDHandler sets the operation handler for the get validation entry by Id operation
+	GetValidationEntryByIDHandler GetValidationEntryByIDHandler
 	// ProbeLivenessHandler sets the operation handler for the probe liveness operation
 	ProbeLivenessHandler ProbeLivenessHandler
 	// ProbeReadinessHandler sets the operation handler for the probe readiness operation
 	ProbeReadinessHandler ProbeReadinessHandler
+	// RollbackRevisionHandler sets the operation handler for the rollback revision operation
+	RollbackRevisionHandler RollbackRevisionHandler
+	// ShowRevisionDeepDiffHandler sets the operation handler for the show revision deep diff operation
+	ShowRevisionDeepDiffHandler ShowRevisionDeepDiffHandler
+	// ShowRevisionDiffHandler sets the operation handler for the show revision diff operation
+	ShowRevisionDiffHandler ShowRevisionDiffHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -151,12 +211,48 @@ func (o *DeckhandAPI) Validate() error {
 		unregistered = append(unregistered, "TxtProducer")
 	}
 
+	if o.CommitRevisionHandler == nil {
+		unregistered = append(unregistered, "CommitRevisionHandler")
+	}
+
+	if o.DeleteAllRevisionsHandler == nil {
+		unregistered = append(unregistered, "DeleteAllRevisionsHandler")
+	}
+
+	if o.DeleteAllTagsHandler == nil {
+		unregistered = append(unregistered, "DeleteAllTagsHandler")
+	}
+
+	if o.DeleteRevisionTagByIDHandler == nil {
+		unregistered = append(unregistered, "DeleteRevisionTagByIDHandler")
+	}
+
+	if o.GetAllValidationsHandler == nil {
+		unregistered = append(unregistered, "GetAllValidationsHandler")
+	}
+
 	if o.GetConfigHandler == nil {
 		unregistered = append(unregistered, "GetConfigHandler")
 	}
 
-	if o.GetGreetingHandler == nil {
-		unregistered = append(unregistered, "GetGreetingHandler")
+	if o.GetDocumentsByIDHandler == nil {
+		unregistered = append(unregistered, "GetDocumentsByIDHandler")
+	}
+
+	if o.GetRenderedDocumentsByIDHandler == nil {
+		unregistered = append(unregistered, "GetRenderedDocumentsByIDHandler")
+	}
+
+	if o.GetRevisionByIDHandler == nil {
+		unregistered = append(unregistered, "GetRevisionByIDHandler")
+	}
+
+	if o.GetValidationByIDHandler == nil {
+		unregistered = append(unregistered, "GetValidationByIDHandler")
+	}
+
+	if o.GetValidationEntryByIDHandler == nil {
+		unregistered = append(unregistered, "GetValidationEntryByIDHandler")
 	}
 
 	if o.ProbeLivenessHandler == nil {
@@ -165,6 +261,18 @@ func (o *DeckhandAPI) Validate() error {
 
 	if o.ProbeReadinessHandler == nil {
 		unregistered = append(unregistered, "ProbeReadinessHandler")
+	}
+
+	if o.RollbackRevisionHandler == nil {
+		unregistered = append(unregistered, "RollbackRevisionHandler")
+	}
+
+	if o.ShowRevisionDeepDiffHandler == nil {
+		unregistered = append(unregistered, "ShowRevisionDeepDiffHandler")
+	}
+
+	if o.ShowRevisionDiffHandler == nil {
+		unregistered = append(unregistered, "ShowRevisionDiffHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -265,6 +373,31 @@ func (o *DeckhandAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/api/v1.0/buckets/{bucket-name}/documents"] = NewCommitRevision(o.context, o.CommitRevisionHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/api/v1.0/revisions"] = NewDeleteAllRevisions(o.context, o.DeleteAllRevisionsHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/api/v1.0/revisions/{revision-id}/tags"] = NewDeleteAllTags(o.context, o.DeleteAllTagsHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/api/v1.0/revisions/{revision-id}/tags/{tag}"] = NewDeleteRevisionTagByID(o.context, o.DeleteRevisionTagByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/validations"] = NewGetAllValidations(o.context, o.GetAllValidationsHandler)
+
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -273,7 +406,27 @@ func (o *DeckhandAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/hello"] = NewGetGreeting(o.context, o.GetGreetingHandler)
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/documents"] = NewGetDocumentsByID(o.context, o.GetDocumentsByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/rendered-documents"] = NewGetRenderedDocumentsByID(o.context, o.GetRenderedDocumentsByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}"] = NewGetRevisionByID(o.context, o.GetRevisionByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/validations/{validation-name}"] = NewGetValidationByID(o.context, o.GetValidationByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/validations/{validation-name}/entries/{entry-id}"] = NewGetValidationEntryByID(o.context, o.GetValidationEntryByIDHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -284,6 +437,21 @@ func (o *DeckhandAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/readiness"] = NewProbeReadiness(o.context, o.ProbeReadinessHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/rollback/{target-revision-id}"] = NewRollbackRevision(o.context, o.RollbackRevisionHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/deepdiff/{comparison-revision-id}"] = NewShowRevisionDeepDiff(o.context, o.ShowRevisionDeepDiffHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/revisions/{revision-id}/diff/{comparison-revision-id}"] = NewShowRevisionDiff(o.context, o.ShowRevisionDiffHandler)
 
 }
 

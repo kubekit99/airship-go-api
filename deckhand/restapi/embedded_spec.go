@@ -24,6 +24,385 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/api/v1.0/buckets/{bucket-name}/documents": {
+      "put": {
+        "description": "Create a batch of documents specified in the request body, whereby a new revision is created.",
+        "operationId": "commitRevision",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/bucket-name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-put-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions": {
+      "delete": {
+        "description": "Delete all revisions. Warning this is equivalent to purging the database.",
+        "operationId": "deleteAllRevisions",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-delete-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}": {
+      "get": {
+        "description": "Show details for a revisions.",
+        "operationId": "getRevisionById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/deepdiff/{comparison-revision-id}": {
+      "get": {
+        "description": "Show revision deep diff between two revisions.",
+        "operationId": "showRevisionDeepDiff",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          },
+          {
+            "$ref": "#/parameters/comparison-revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/diff/{comparison-revision-id}": {
+      "get": {
+        "description": "Show revision diff between two revisions.",
+        "operationId": "showRevisionDiff",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          },
+          {
+            "$ref": "#/parameters/comparison-revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/documents": {
+      "get": {
+        "description": "List cleartext documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.",
+        "operationId": "getDocumentsById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/rendered-documents": {
+      "get": {
+        "description": "List encrypted documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.  Only enforced after ` + "`" + `` + "`" + `list_cleartext_documents` + "`" + `` + "`" + ` passes.  Conditionally enforced for the endpoints below if any of the documents in the request body have a ` + "`" + `` + "`" + `metadata.storagePolicy` + "`" + `` + "`" + ` of  encrypted . If policy enforcement fails, encrypted documents are excluded from the response.",
+        "operationId": "getRenderedDocumentsById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/tags": {
+      "delete": {
+        "description": "Delete all tags for a revision",
+        "operationId": "deleteAllTags",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-delete-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/tags/{tag}": {
+      "delete": {
+        "description": "Delete a revision tag.",
+        "operationId": "deleteRevisionTagById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          },
+          {
+            "$ref": "#/parameters/tag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-delete-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations": {
+      "get": {
+        "description": "List all validations that have been reported for a revision. Also lists the validation entries for a particular validation.",
+        "operationId": "getAllValidations",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations/{validation-name}": {
+      "get": {
+        "description": "Gets the full details of a particular validation entry, including all posted error details.",
+        "operationId": "getValidationById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          },
+          {
+            "$ref": "#/parameters/validation-name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations/{validation-name}/entries/{entry-id}": {
+      "get": {
+        "description": "Gets the full details of a particular validation entry, including all posted error details.",
+        "operationId": "getValidationEntryById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/revision-id"
+          },
+          {
+            "$ref": "#/parameters/validation-name"
+          },
+          {
+            "$ref": "#/parameters/entry-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/rollback/{target-revision-id}": {
+      "post": {
+        "description": "Roll back a revision to a previous one in the revision history, whereby the target revision s documents are re-created for the new revision.",
+        "operationId": "rollbackRevision",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/target-revision-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -43,31 +422,6 @@ func init() {
             "description": "returns a config file",
             "schema": {
               "description": "contains the actual config as plain text",
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/hello": {
-      "get": {
-        "produces": [
-          "text/plain"
-        ],
-        "operationId": "getGreeting",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "defaults to World if not given",
-            "name": "name",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a greeting",
-            "schema": {
-              "description": "contains the actual greeting as plain text",
               "type": "string"
             }
           }
@@ -108,6 +462,270 @@ func init() {
         }
       }
     }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "bucket-name": {
+      "type": "string",
+      "name": "bucket-name",
+      "in": "path",
+      "required": true
+    },
+    "comparison-revision-id": {
+      "type": "string",
+      "name": "comparison-revision-id",
+      "in": "path",
+      "required": true
+    },
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "entry-id": {
+      "type": "string",
+      "name": "entry-id",
+      "in": "path",
+      "required": true
+    },
+    "revision-id": {
+      "type": "string",
+      "name": "revision-id",
+      "in": "path",
+      "required": true
+    },
+    "tag": {
+      "type": "string",
+      "name": "tag",
+      "in": "path",
+      "required": true
+    },
+    "target-revision-id": {
+      "type": "string",
+      "name": "target-revision-id",
+      "in": "path",
+      "required": true
+    },
+    "validation-name": {
+      "type": "string",
+      "name": "validation-name",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-delete-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
+      }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-put-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
@@ -117,6 +735,530 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/api/v1.0/buckets/{bucket-name}/documents": {
+      "put": {
+        "description": "Create a batch of documents specified in the request body, whereby a new revision is created.",
+        "operationId": "commitRevision",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "bucket-name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions": {
+      "delete": {
+        "description": "Delete all revisions. Warning this is equivalent to purging the database.",
+        "operationId": "deleteAllRevisions",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}": {
+      "get": {
+        "description": "Show details for a revisions.",
+        "operationId": "getRevisionById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/deepdiff/{comparison-revision-id}": {
+      "get": {
+        "description": "Show revision deep diff between two revisions.",
+        "operationId": "showRevisionDeepDiff",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "comparison-revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/diff/{comparison-revision-id}": {
+      "get": {
+        "description": "Show revision diff between two revisions.",
+        "operationId": "showRevisionDiff",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "comparison-revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/documents": {
+      "get": {
+        "description": "List cleartext documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.",
+        "operationId": "getDocumentsById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/rendered-documents": {
+      "get": {
+        "description": "List encrypted documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.  Only enforced after ` + "`" + `` + "`" + `list_cleartext_documents` + "`" + `` + "`" + ` passes.  Conditionally enforced for the endpoints below if any of the documents in the request body have a ` + "`" + `` + "`" + `metadata.storagePolicy` + "`" + `` + "`" + ` of  encrypted . If policy enforcement fails, encrypted documents are excluded from the response.",
+        "operationId": "getRenderedDocumentsById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/tags": {
+      "delete": {
+        "description": "Delete all tags for a revision",
+        "operationId": "deleteAllTags",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/tags/{tag}": {
+      "delete": {
+        "description": "Delete a revision tag.",
+        "operationId": "deleteRevisionTagById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tag",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations": {
+      "get": {
+        "description": "List all validations that have been reported for a revision. Also lists the validation entries for a particular validation.",
+        "operationId": "getAllValidations",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations/{validation-name}": {
+      "get": {
+        "description": "Gets the full details of a particular validation entry, including all posted error details.",
+        "operationId": "getValidationById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "validation-name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/revisions/{revision-id}/validations/{validation-name}/entries/{entry-id}": {
+      "get": {
+        "description": "Gets the full details of a particular validation entry, including all posted error details.",
+        "operationId": "getValidationEntryById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "revision-id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "validation-name",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "entry-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/rollback/{target-revision-id}": {
+      "post": {
+        "description": "Roll back a revision to a previous one in the revision history, whereby the target revision s documents are re-created for the new revision.",
+        "operationId": "rollbackRevision",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "target-revision-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -136,31 +1278,6 @@ func init() {
             "description": "returns a config file",
             "schema": {
               "description": "contains the actual config as plain text",
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/hello": {
-      "get": {
-        "produces": [
-          "text/plain"
-        ],
-        "operationId": "getGreeting",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "defaults to World if not given",
-            "name": "name",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returns a greeting",
-            "schema": {
-              "description": "contains the actual greeting as plain text",
               "type": "string"
             }
           }
@@ -199,6 +1316,270 @@ func init() {
             }
           }
         }
+      }
+    }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "bucket-name": {
+      "type": "string",
+      "name": "bucket-name",
+      "in": "path",
+      "required": true
+    },
+    "comparison-revision-id": {
+      "type": "string",
+      "name": "comparison-revision-id",
+      "in": "path",
+      "required": true
+    },
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "entry-id": {
+      "type": "string",
+      "name": "entry-id",
+      "in": "path",
+      "required": true
+    },
+    "revision-id": {
+      "type": "string",
+      "name": "revision-id",
+      "in": "path",
+      "required": true
+    },
+    "tag": {
+      "type": "string",
+      "name": "tag",
+      "in": "path",
+      "required": true
+    },
+    "target-revision-id": {
+      "type": "string",
+      "name": "target-revision-id",
+      "in": "path",
+      "required": true
+    },
+    "validation-name": {
+      "type": "string",
+      "name": "validation-name",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-delete-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
+      }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-put-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
       }
     }
   }

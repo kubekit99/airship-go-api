@@ -46,16 +46,6 @@ func configureAPI(api *operations.DeckhandAPI) http.Handler {
 			configfile := fmt.Sprintf("Config for %s!", name)
 			return operations.NewGetConfigOK().WithPayload(configfile)
 		})
-	api.GetGreetingHandler = operations.GetGreetingHandlerFunc(
-		func(params operations.GetGreetingParams) middleware.Responder {
-			name := swag.StringValue(params.Name)
-			if name == "" {
-				name = "World"
-			}
-
-			greeting := fmt.Sprintf("Hello, %s!", name)
-			return operations.NewGetGreetingOK().WithPayload(greeting)
-		})
 
 	api.ProbeLivenessHandler = operations.ProbeLivenessHandlerFunc(
 		func(params operations.ProbeLivenessParams) middleware.Responder {

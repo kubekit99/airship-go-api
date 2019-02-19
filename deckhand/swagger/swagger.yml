@@ -45,20 +45,506 @@ paths:
           schema:
               type: string
               description: contains the actual config as plain text
-  /hello:
-    get:
-      produces:
-        - text/plain
+
+  /api/v1.0/buckets/{bucket-name}/documents:
+    put:
+      description: Create a batch of documents specified in the request body, whereby a new revision is created.
+      operationId: commitRevision
       parameters:
-        - name: name
-          required: false
-          type: string
-          in: query
-          description: defaults to World if not given
-      operationId: getGreeting
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/bucket-name"
       responses:
-        200:
-          description: returns a greeting
-          schema:
+        '200':
+          $ref: "#/responses/response-put-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/rollback/{target-revision-id}:
+    post:
+      description: Roll back a revision to a previous one in the revision history, whereby the target revision s documents are re-created for the new revision.
+      operationId: rollbackRevision
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/target-revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/documents:
+    get:
+      description: List cleartext documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.
+      operationId: getDocumentsById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/rendered-documents:
+    get:
+      description: List encrypted documents for a revision (with no layering or substitution applied) as well as fully layered and substituted concrete documents.  Only enforced after ``list_cleartext_documents`` passes.  Conditionally enforced for the endpoints below if any of the documents in the request body have a ``metadata.storagePolicy`` of  encrypted . If policy enforcement fails, encrypted documents are excluded from the response.
+      operationId: getRenderedDocumentsById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}:
+    get:
+      description: Show details for a revisions.
+      operationId: getRevisionById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions:
+    get:
+      description: List all revisions.
+      operationId: listAllRevisions
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+
+  /api/v1.0/revisions:
+    delete:
+      description: Delete all revisions. Warning this is equivalent to purging the database.
+      operationId: deleteAllRevisions
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-delete-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/deepdiff/{comparison-revision-id}:
+    get:
+      description: Show revision deep diff between two revisions.
+      operationId: showRevisionDeepDiff
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/comparison-revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/diff/{comparison-revision-id}:
+    get:
+      description: Show revision diff between two revisions.
+      operationId: showRevisionDiff
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/comparison-revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+
+  /api/v1.0/revisions/{revision-id}/tags:
+    post:
+      description: Create a revision tag.
+      operationId: createRevisionTag
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/tags/{tag}:
+    get:
+      description: Show details for a revision tag.
+      operationId: getRevisionTagById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/tag"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/tags:
+    get:
+      description: List all tags for a revision.
+      operationId: getAllRevisionTags
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/tags/{tag}:
+    delete:
+      description: Delete a revision tag.
+      operationId: deleteRevisionTagById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/tag"
+      responses:
+        '200':
+          $ref: "#/responses/response-delete-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/tags:
+    delete:
+      description: Delete all tags for a revision
+      operationId: deleteAllTags
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-delete-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/validations:
+    post:
+      description: Add the results of a validation for a particular revision.
+      operationId: addValidationResult
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/validations:
+    get:
+      description: List all validations that have been reported for a revision. Also lists the validation entries for a particular validation. 
+      operationId: getAllValidations
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/validations/{validation-name}:
+    get:
+      description: Gets the full details of a particular validation entry, including all posted error details. 
+      operationId: getValidationById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/validation-name"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+  /api/v1.0/revisions/{revision-id}/validations/{validation-name}/entries/{entry-id}:
+    get:
+      description: Gets the full details of a particular validation entry, including all posted error details. 
+      operationId: getValidationEntryById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/revision-id"
+        - $ref: "#/parameters/validation-name"
+        - $ref: "#/parameters/entry-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+parameters:
+  x-auth-token:
+    in: header
+    name: X-Auth-Token
+    required: false
+    type: string
+    description: A fernet keystone bearer token used for authentication and authorization
+  content-type:
+    in: header
+    name: Content-Type
+    required: true
+    type: string
+  bucket-name:
+    in: path
+    name: bucket-name
+    required: true
+    type: string
+  revision-id:
+    in: path
+    name: revision-id
+    required: true
+    type: string
+  target-revision-id:
+    in: path
+    name: target-revision-id
+    required: true
+    type: string
+  comparison-revision-id:
+    in: path
+    name: comparison-revision-id
+    required: true
+    type: string
+  entry-id:
+    in: path
+    name: entry-id
+    required: true
+    type: string
+  validation-name:
+    in: path
+    name: validation-name
+    required: true
+    type: string
+  tag:
+    in: path
+    name: tag
+    required: true
+    type: string
+
+responses:
+  # HTTP error responses
+  err-bad-request:
+    description: 400 Bad request
+  err-no-auth:
+    description: 401 Not authorized
+  err-forbidden:
+    description: 403 Forbidden
+  err-not-found:
+    description: 404 Not found
+  err-not-allowed:
+    description: 405 Method not allowed
+  err-unsupported-media-type:
+    description: |
+      415 Unsupported Media Type
+
+      Mime type needs to be application/json or application/x-yaml.
+  err-server-error:
+    description: 500 Internal Server Error
+  # API responses
+  response-post-apply:
+    description: Response of application of an Shipyard manifest
+    schema:
+      allOf:
+        - $ref: "#/definitions/applyresult"
+  response-get-versions:
+    description: Response of getting Shipyard versions
+    schema:
+      allOf:
+      - $ref: "#/definitions/versions"
+      example:
+        v1.0:
+          path: /api/v1.0
+          status: stable
+  response-get-status:
+    description: Response of Tiller statuses
+    schema:
+      allOf:
+        - $ref: "#/definitions/status"
+      example:
+        tiller:
+          state: True
+          version: 0.1.0
+  response-get-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+  response-post-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+  response-put-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+  response-delete-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+definitions:
+  status:
+    type: object
+    properties:
+      tiller:
+        type: object
+        properties:
+          state:
+            type: boolean
+          version:
+            type: string
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+  simple:
+    type: string
+  detail:
+    type: object
+    properties:
+      errorCount:
+        type: integer
+      messageList:
+        type: array
+        items:
+          type: string
+  applyresult:
+    type: object
+    properties:
+      message:
+        type: object
+        properties:
+          install:
+            type: array
+            items:
               type: string
-              description: contains the actual greeting as plain text
+          upgrade:
+            type: array
+            items:
+              type: string
+          diff:
+            type: object
+            additionalProperties:
+              type: string
+  versions:
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/version"
+  version:
+    type: object
+    properties:
+      path:
+        type: string
+      status:
+        type: string
+  base-response:
+    type: object
+    properties:
+      kind:
+        type: string
+      apiVersion:
+        type: string
+      reason:
+        type: string
+      metadata:
+        $ref: "#/definitions/metadata"
+      details:
+        $ref: "#/definitions/detail"
+      status:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
