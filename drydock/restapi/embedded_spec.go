@@ -24,6 +24,218 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/api/v1.0/designs": {
+      "post": {
+        "description": "Load design data",
+        "operationId": "loadDesignData",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/designs/{design-id}": {
+      "get": {
+        "description": "Read loaded design data",
+        "operationId": "readLoadedDesignData",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/design-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/designs/{design-id}/parts": {
+      "post": {
+        "description": "Load design data",
+        "operationId": "loadDesignDataParts",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/design-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/health/extended": {
+      "get": {
+        "description": "Get health status",
+        "operationId": "getHealthStatus",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/nodes/{nodename}/builddata": {
+      "get": {
+        "description": "Read build data for a node",
+        "operationId": "readBuildDataForANode",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/nodename"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/tasks": {
+      "post": {
+        "description": "Create relabel_nodes task",
+        "operationId": "createRelabelNodesTask",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/tasks/{task-id}": {
+      "get": {
+        "description": "Get task status",
+        "operationId": "getTaskStatusById",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          },
+          {
+            "$ref": "#/parameters/task-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-get-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/validatedesign": {
+      "post": {
+        "description": "Validate site design",
+        "operationId": "validateSiteDesign",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-auth-token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/response-post-simple"
+          },
+          "401": {
+            "$ref": "#/responses/err-no-auth"
+          },
+          "403": {
+            "$ref": "#/responses/err-forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/err-server-error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -108,6 +320,232 @@ func init() {
         }
       }
     }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "design-id": {
+      "type": "string",
+      "name": "design-id",
+      "in": "path",
+      "required": true
+    },
+    "nodename": {
+      "type": "string",
+      "name": "nodename",
+      "in": "path",
+      "required": true
+    },
+    "task-id": {
+      "type": "string",
+      "name": "task-id",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
+      }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
@@ -117,6 +555,286 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/api/v1.0/designs": {
+      "post": {
+        "description": "Load design data",
+        "operationId": "loadDesignData",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/designs/{design-id}": {
+      "get": {
+        "description": "Read loaded design data",
+        "operationId": "readLoadedDesignData",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "design-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/designs/{design-id}/parts": {
+      "post": {
+        "description": "Load design data",
+        "operationId": "loadDesignDataParts",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "design-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/health/extended": {
+      "get": {
+        "description": "Get health status",
+        "operationId": "getHealthStatus",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/nodes/{nodename}/builddata": {
+      "get": {
+        "description": "Read build data for a node",
+        "operationId": "readBuildDataForANode",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "nodename",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/tasks": {
+      "post": {
+        "description": "Create relabel_nodes task",
+        "operationId": "createRelabelNodesTask",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/tasks/{task-id}": {
+      "get": {
+        "description": "Get task status",
+        "operationId": "getTaskStatusById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "name": "task-id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1.0/validatedesign": {
+      "post": {
+        "description": "Validate site design",
+        "operationId": "validateSiteDesign",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A fernet keystone bearer token used for authentication and authorization",
+            "name": "X-Auth-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic String answer",
+            "schema": {
+              "type": "string",
+              "example": "simple"
+            }
+          },
+          "401": {
+            "description": "401 Not authorized"
+          },
+          "403": {
+            "description": "403 Forbidden"
+          },
+          "500": {
+            "description": "500 Internal Server Error"
+          }
+        }
+      }
+    },
     "/config": {
       "get": {
         "produces": [
@@ -199,6 +917,232 @@ func init() {
             }
           }
         }
+      }
+    }
+  },
+  "definitions": {
+    "applyresult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "diff": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "upgrade": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "base-response": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "details": {
+          "$ref": "#/definitions/detail"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "properties": {
+        "errorCount": {
+          "type": "integer"
+        },
+        "messageList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "simple": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "tiller": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/version"
+      }
+    }
+  },
+  "parameters": {
+    "content-type": {
+      "type": "string",
+      "name": "Content-Type",
+      "in": "header",
+      "required": true
+    },
+    "design-id": {
+      "type": "string",
+      "name": "design-id",
+      "in": "path",
+      "required": true
+    },
+    "nodename": {
+      "type": "string",
+      "name": "nodename",
+      "in": "path",
+      "required": true
+    },
+    "task-id": {
+      "type": "string",
+      "name": "task-id",
+      "in": "path",
+      "required": true
+    },
+    "x-auth-token": {
+      "type": "string",
+      "description": "A fernet keystone bearer token used for authentication and authorization",
+      "name": "X-Auth-Token",
+      "in": "header"
+    }
+  },
+  "responses": {
+    "err-bad-request": {
+      "description": "400 Bad request"
+    },
+    "err-forbidden": {
+      "description": "403 Forbidden"
+    },
+    "err-no-auth": {
+      "description": "401 Not authorized"
+    },
+    "err-not-allowed": {
+      "description": "405 Method not allowed"
+    },
+    "err-not-found": {
+      "description": "404 Not found"
+    },
+    "err-server-error": {
+      "description": "500 Internal Server Error"
+    },
+    "err-unsupported-media-type": {
+      "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
+    },
+    "response-get-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
+    },
+    "response-get-status": {
+      "description": "Response of Tiller statuses",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/status"
+          }
+        ],
+        "example": {
+          "tiller": {
+            "state": true,
+            "version": "0.1.0"
+          }
+        }
+      }
+    },
+    "response-get-versions": {
+      "description": "Response of getting Shipyard versions",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/versions"
+          }
+        ],
+        "example": {
+          "v1.0": {
+            "path": "/api/v1.0",
+            "status": "stable"
+          }
+        }
+      }
+    },
+    "response-post-apply": {
+      "description": "Response of application of an Shipyard manifest",
+      "schema": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/applyresult"
+          }
+        ]
+      }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
       }
     }
   }

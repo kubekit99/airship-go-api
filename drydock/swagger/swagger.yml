@@ -62,3 +62,435 @@ paths:
           schema:
               type: string
               description: contains the actual greeting as plain text
+  /api/v1.0/tasks:
+    get:
+      description: Get task status
+      operationId: getTaskStatus
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks/{task-id}:
+    get:
+      description: Get task status
+      operationId: getTaskStatusById
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/task-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create a task
+      operationId: createTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create validate_design task
+      operationId: createValidateDesignTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create verify_site task
+      operationId: createVerifySiteTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create prepare_site task
+      operationId: createPrepareSiteTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create verify_nodes task
+      operationId: createVerifyNodesTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create prepare_nodes task
+      operationId: createPrepareNodesTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create deploy_nodes task
+      operationId: createDeployNodesTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create destroy_nodes task
+      operationId: createDestoryNodesTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/tasks:
+    post:
+      description: Create relabel_nodes task
+      operationId: createRelabelNodesTask
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/nodes/{nodename}/builddata:
+    get:
+      description: Read build data for a node
+      operationId: readBuildDataForANode
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/nodename"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/designs:
+    get:
+      description: Read loaded design data
+      operationId: readLoadedDesignData
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/designs/{design-id}:
+    get:
+      description: Read loaded design data
+      operationId: readLoadedDesignData
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/design-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/designs:
+    post:
+      description: Load design data
+      operationId: loadDesignData
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/designs/{design-id}/parts:
+    post:
+      description: Load design data
+      operationId: loadDesignDataParts
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/design-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/health/extended:
+    get:
+      description: Get health status
+      operationId: getHealthStatus
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/validatedesign:
+    post:
+      description: Validate site design
+      operationId: validateSiteDesign
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+
+parameters:
+  x-auth-token:
+    in: header
+    name: X-Auth-Token
+    required: false
+    type: string
+    description: A fernet keystone bearer token used for authentication and authorization
+  content-type:
+    in: header
+    name: Content-Type
+    required: true
+    type: string
+  task-id:
+    in: path
+    name: task-id
+    required: true
+    type: string
+  design-id:
+    in: path
+    name: design-id
+    required: true
+    type: string
+  nodename:
+    in: path
+    name: nodename
+    required: true
+    type: string
+
+responses:
+  # HTTP error responses
+  err-bad-request:
+    description: 400 Bad request
+  err-no-auth:
+    description: 401 Not authorized
+  err-forbidden:
+    description: 403 Forbidden
+  err-not-found:
+    description: 404 Not found
+  err-not-allowed:
+    description: 405 Method not allowed
+  err-unsupported-media-type:
+    description: |
+      415 Unsupported Media Type
+
+      Mime type needs to be application/json or application/x-yaml.
+  err-server-error:
+    description: 500 Internal Server Error
+  # API responses
+  response-post-apply:
+    description: Response of application of an Shipyard manifest
+    schema:
+      allOf:
+        - $ref: "#/definitions/applyresult"
+  response-get-versions:
+    description: Response of getting Shipyard versions
+    schema:
+      allOf:
+      - $ref: "#/definitions/versions"
+      example:
+        v1.0:
+          path: /api/v1.0
+          status: stable
+  response-get-status:
+    description: Response of Tiller statuses
+    schema:
+      allOf:
+        - $ref: "#/definitions/status"
+      example:
+        tiller:
+          state: True
+          version: 0.1.0
+  response-get-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+  response-post-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+definitions:
+  status:
+    type: object
+    properties:
+      tiller:
+        type: object
+        properties:
+          state:
+            type: boolean
+          version:
+            type: string
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+  simple:
+    type: string
+  detail:
+    type: object
+    properties:
+      errorCount:
+        type: integer
+      messageList:
+        type: array
+        items:
+          type: string
+  applyresult:
+    type: object
+    properties:
+      message:
+        type: object
+        properties:
+          install:
+            type: array
+            items:
+              type: string
+          upgrade:
+            type: array
+            items:
+              type: string
+          diff:
+            type: object
+            additionalProperties:
+              type: string
+  versions:
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/version"
+  version:
+    type: object
+    properties:
+      path:
+        type: string
+      status:
+        type: string
+  base-response:
+    type: object
+    properties:
+      kind:
+        type: string
+      apiVersion:
+        type: string
+      reason:
+        type: string
+      metadata:
+        $ref: "#/definitions/metadata"
+      details:
+        $ref: "#/definitions/detail"
+      status:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer

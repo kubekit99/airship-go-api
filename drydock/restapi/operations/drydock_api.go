@@ -37,17 +37,41 @@ func NewDrydockAPI(spec *loads.Document) *DrydockAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		TxtProducer:         runtime.TextProducer(),
+		CreateRelabelNodesTaskHandler: CreateRelabelNodesTaskHandlerFunc(func(params CreateRelabelNodesTaskParams) middleware.Responder {
+			return middleware.NotImplemented("operation CreateRelabelNodesTask has not yet been implemented")
+		}),
 		GetConfigHandler: GetConfigHandlerFunc(func(params GetConfigParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetConfig has not yet been implemented")
 		}),
 		GetGreetingHandler: GetGreetingHandlerFunc(func(params GetGreetingParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetGreeting has not yet been implemented")
 		}),
+		GetHealthStatusHandler: GetHealthStatusHandlerFunc(func(params GetHealthStatusParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetHealthStatus has not yet been implemented")
+		}),
+		GetTaskStatusByIDHandler: GetTaskStatusByIDHandlerFunc(func(params GetTaskStatusByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetTaskStatusByID has not yet been implemented")
+		}),
+		LoadDesignDataHandler: LoadDesignDataHandlerFunc(func(params LoadDesignDataParams) middleware.Responder {
+			return middleware.NotImplemented("operation LoadDesignData has not yet been implemented")
+		}),
+		LoadDesignDataPartsHandler: LoadDesignDataPartsHandlerFunc(func(params LoadDesignDataPartsParams) middleware.Responder {
+			return middleware.NotImplemented("operation LoadDesignDataParts has not yet been implemented")
+		}),
 		ProbeLivenessHandler: ProbeLivenessHandlerFunc(func(params ProbeLivenessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeLiveness has not yet been implemented")
 		}),
 		ProbeReadinessHandler: ProbeReadinessHandlerFunc(func(params ProbeReadinessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeReadiness has not yet been implemented")
+		}),
+		ReadBuildDataForANodeHandler: ReadBuildDataForANodeHandlerFunc(func(params ReadBuildDataForANodeParams) middleware.Responder {
+			return middleware.NotImplemented("operation ReadBuildDataForANode has not yet been implemented")
+		}),
+		ReadLoadedDesignDataHandler: ReadLoadedDesignDataHandlerFunc(func(params ReadLoadedDesignDataParams) middleware.Responder {
+			return middleware.NotImplemented("operation ReadLoadedDesignData has not yet been implemented")
+		}),
+		ValidateSiteDesignHandler: ValidateSiteDesignHandlerFunc(func(params ValidateSiteDesignParams) middleware.Responder {
+			return middleware.NotImplemented("operation ValidateSiteDesign has not yet been implemented")
 		}),
 	}
 }
@@ -80,14 +104,30 @@ type DrydockAPI struct {
 	// TxtProducer registers a producer for a "text/plain" mime type
 	TxtProducer runtime.Producer
 
+	// CreateRelabelNodesTaskHandler sets the operation handler for the create relabel nodes task operation
+	CreateRelabelNodesTaskHandler CreateRelabelNodesTaskHandler
 	// GetConfigHandler sets the operation handler for the get config operation
 	GetConfigHandler GetConfigHandler
 	// GetGreetingHandler sets the operation handler for the get greeting operation
 	GetGreetingHandler GetGreetingHandler
+	// GetHealthStatusHandler sets the operation handler for the get health status operation
+	GetHealthStatusHandler GetHealthStatusHandler
+	// GetTaskStatusByIDHandler sets the operation handler for the get task status by Id operation
+	GetTaskStatusByIDHandler GetTaskStatusByIDHandler
+	// LoadDesignDataHandler sets the operation handler for the load design data operation
+	LoadDesignDataHandler LoadDesignDataHandler
+	// LoadDesignDataPartsHandler sets the operation handler for the load design data parts operation
+	LoadDesignDataPartsHandler LoadDesignDataPartsHandler
 	// ProbeLivenessHandler sets the operation handler for the probe liveness operation
 	ProbeLivenessHandler ProbeLivenessHandler
 	// ProbeReadinessHandler sets the operation handler for the probe readiness operation
 	ProbeReadinessHandler ProbeReadinessHandler
+	// ReadBuildDataForANodeHandler sets the operation handler for the read build data for a node operation
+	ReadBuildDataForANodeHandler ReadBuildDataForANodeHandler
+	// ReadLoadedDesignDataHandler sets the operation handler for the read loaded design data operation
+	ReadLoadedDesignDataHandler ReadLoadedDesignDataHandler
+	// ValidateSiteDesignHandler sets the operation handler for the validate site design operation
+	ValidateSiteDesignHandler ValidateSiteDesignHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -151,6 +191,10 @@ func (o *DrydockAPI) Validate() error {
 		unregistered = append(unregistered, "TxtProducer")
 	}
 
+	if o.CreateRelabelNodesTaskHandler == nil {
+		unregistered = append(unregistered, "CreateRelabelNodesTaskHandler")
+	}
+
 	if o.GetConfigHandler == nil {
 		unregistered = append(unregistered, "GetConfigHandler")
 	}
@@ -159,12 +203,40 @@ func (o *DrydockAPI) Validate() error {
 		unregistered = append(unregistered, "GetGreetingHandler")
 	}
 
+	if o.GetHealthStatusHandler == nil {
+		unregistered = append(unregistered, "GetHealthStatusHandler")
+	}
+
+	if o.GetTaskStatusByIDHandler == nil {
+		unregistered = append(unregistered, "GetTaskStatusByIDHandler")
+	}
+
+	if o.LoadDesignDataHandler == nil {
+		unregistered = append(unregistered, "LoadDesignDataHandler")
+	}
+
+	if o.LoadDesignDataPartsHandler == nil {
+		unregistered = append(unregistered, "LoadDesignDataPartsHandler")
+	}
+
 	if o.ProbeLivenessHandler == nil {
 		unregistered = append(unregistered, "ProbeLivenessHandler")
 	}
 
 	if o.ProbeReadinessHandler == nil {
 		unregistered = append(unregistered, "ProbeReadinessHandler")
+	}
+
+	if o.ReadBuildDataForANodeHandler == nil {
+		unregistered = append(unregistered, "ReadBuildDataForANodeHandler")
+	}
+
+	if o.ReadLoadedDesignDataHandler == nil {
+		unregistered = append(unregistered, "ReadLoadedDesignDataHandler")
+	}
+
+	if o.ValidateSiteDesignHandler == nil {
+		unregistered = append(unregistered, "ValidateSiteDesignHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -265,6 +337,11 @@ func (o *DrydockAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/tasks"] = NewCreateRelabelNodesTask(o.context, o.CreateRelabelNodesTaskHandler)
+
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -278,12 +355,47 @@ func (o *DrydockAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/api/v1.0/health/extended"] = NewGetHealthStatus(o.context, o.GetHealthStatusHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/tasks/{task-id}"] = NewGetTaskStatusByID(o.context, o.GetTaskStatusByIDHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/designs"] = NewLoadDesignData(o.context, o.LoadDesignDataHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/designs/{design-id}/parts"] = NewLoadDesignDataParts(o.context, o.LoadDesignDataPartsHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/liveness"] = NewProbeLiveness(o.context, o.ProbeLivenessHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/readiness"] = NewProbeReadiness(o.context, o.ProbeReadinessHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/nodes/{nodename}/builddata"] = NewReadBuildDataForANode(o.context, o.ReadBuildDataForANodeHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/designs/{design-id}"] = NewReadLoadedDesignData(o.context, o.ReadLoadedDesignDataHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/validatedesign"] = NewValidateSiteDesign(o.context, o.ValidateSiteDesignHandler)
 
 }
 

@@ -25,6 +25,34 @@ type Client struct {
 }
 
 /*
+CreateRelabelNodesTask Create relabel_nodes task
+*/
+func (a *Client) CreateRelabelNodesTask(params *CreateRelabelNodesTaskParams) (*CreateRelabelNodesTaskOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewCreateRelabelNodesTaskParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "createRelabelNodesTask",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/tasks",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &CreateRelabelNodesTaskReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*CreateRelabelNodesTaskOK), nil
+
+}
+
+/*
 GetConfig get config API
 */
 func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
@@ -81,6 +109,118 @@ func (a *Client) GetGreeting(params *GetGreetingParams) (*GetGreetingOK, error) 
 }
 
 /*
+GetHealthStatus Get health status
+*/
+func (a *Client) GetHealthStatus(params *GetHealthStatusParams) (*GetHealthStatusOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetHealthStatusParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getHealthStatus",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/health/extended",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetHealthStatusReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetHealthStatusOK), nil
+
+}
+
+/*
+GetTaskStatusByID Get task status
+*/
+func (a *Client) GetTaskStatusByID(params *GetTaskStatusByIDParams) (*GetTaskStatusByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetTaskStatusByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getTaskStatusById",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/tasks/{task-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetTaskStatusByIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetTaskStatusByIDOK), nil
+
+}
+
+/*
+LoadDesignData Load design data
+*/
+func (a *Client) LoadDesignData(params *LoadDesignDataParams) (*LoadDesignDataOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLoadDesignDataParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "loadDesignData",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/designs",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LoadDesignDataReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*LoadDesignDataOK), nil
+
+}
+
+/*
+LoadDesignDataParts Load design data
+*/
+func (a *Client) LoadDesignDataParts(params *LoadDesignDataPartsParams) (*LoadDesignDataPartsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLoadDesignDataPartsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "loadDesignDataParts",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/designs/{design-id}/parts",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LoadDesignDataPartsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*LoadDesignDataPartsOK), nil
+
+}
+
+/*
 ProbeLiveness probe liveness API
 */
 func (a *Client) ProbeLiveness(params *ProbeLivenessParams) (*ProbeLivenessOK, error) {
@@ -133,6 +273,90 @@ func (a *Client) ProbeReadiness(params *ProbeReadinessParams) (*ProbeReadinessOK
 		return nil, err
 	}
 	return result.(*ProbeReadinessOK), nil
+
+}
+
+/*
+ReadBuildDataForANode Read build data for a node
+*/
+func (a *Client) ReadBuildDataForANode(params *ReadBuildDataForANodeParams) (*ReadBuildDataForANodeOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewReadBuildDataForANodeParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "readBuildDataForANode",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/nodes/{nodename}/builddata",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ReadBuildDataForANodeReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ReadBuildDataForANodeOK), nil
+
+}
+
+/*
+ReadLoadedDesignData Read loaded design data
+*/
+func (a *Client) ReadLoadedDesignData(params *ReadLoadedDesignDataParams) (*ReadLoadedDesignDataOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewReadLoadedDesignDataParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "readLoadedDesignData",
+		Method:             "GET",
+		PathPattern:        "/api/v1.0/designs/{design-id}",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ReadLoadedDesignDataReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ReadLoadedDesignDataOK), nil
+
+}
+
+/*
+ValidateSiteDesign Validate site design
+*/
+func (a *Client) ValidateSiteDesign(params *ValidateSiteDesignParams) (*ValidateSiteDesignOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewValidateSiteDesignParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "validateSiteDesign",
+		Method:             "POST",
+		PathPattern:        "/api/v1.0/validatedesign",
+		ProducesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{""},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ValidateSiteDesignReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ValidateSiteDesignOK), nil
 
 }
 
