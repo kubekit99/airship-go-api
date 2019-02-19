@@ -31,7 +31,7 @@ func NewGetSiteStatuses(ctx *middleware.Context, handler GetSiteStatusesHandler)
 
 /*GetSiteStatuses swagger:route GET /api/v1.0/site_statuses getSiteStatuses
 
-Returns the '/site_statuses'
+Retrieve the statuses for the site
 
 */
 type GetSiteStatuses struct {

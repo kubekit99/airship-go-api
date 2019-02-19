@@ -17,7 +17,6 @@ charts using a single command.
 
     Consumes:
     - application/json
-    - application/x-yaml
 
     Produces:
     - text/plain

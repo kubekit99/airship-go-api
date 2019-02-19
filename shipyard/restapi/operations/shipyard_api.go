@@ -15,7 +15,6 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 	security "github.com/go-openapi/runtime/security"
-	"github.com/go-openapi/runtime/yamlpc"
 	spec "github.com/go-openapi/spec"
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -37,55 +36,36 @@ func NewShipyardAPI(spec *loads.Document) *ShipyardAPI {
 		APIKeyAuthenticator: security.APIKeyAuth,
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
-		YamlConsumer:        yamlpc.YAMLConsumer(),
 		TxtProducer:         runtime.TextProducer(),
-		GetActionByActionIDHandler: GetActionByActionIDHandlerFunc(func(params GetActionByActionIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActionByActionID has not yet been implemented")
-		}),
-		GetActionControlHandler: GetActionControlHandlerFunc(func(params GetActionControlParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActionControl has not yet been implemented")
-		}),
-		GetActionStepByIDHandler: GetActionStepByIDHandlerFunc(func(params GetActionStepByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActionStepByID has not yet been implemented")
-		}),
-		GetActionStepLogsHandler: GetActionStepLogsHandlerFunc(func(params GetActionStepLogsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActionStepLogs has not yet been implemented")
-		}),
-		GetActionValidationByIDHandler: GetActionValidationByIDHandlerFunc(func(params GetActionValidationByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActionValidationByID has not yet been implemented")
-		}),
-		GetActionsHandler: GetActionsHandlerFunc(func(params GetActionsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetActions has not yet been implemented")
-		}),
-		GetCommitConfigDocsHandler: GetCommitConfigDocsHandlerFunc(func(params GetCommitConfigDocsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetCommitConfigDocs has not yet been implemented")
+		CommitConfigDocsHandler: CommitConfigDocsHandlerFunc(func(params CommitConfigDocsParams) middleware.Responder {
+			return middleware.NotImplemented("operation CommitConfigDocs has not yet been implemented")
 		}),
 		GetConfigHandler: GetConfigHandlerFunc(func(params GetConfigParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetConfig has not yet been implemented")
 		}),
-		GetConfigDocByIDHandler: GetConfigDocByIDHandlerFunc(func(params GetConfigDocByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetConfigDocByID has not yet been implemented")
-		}),
-		GetConfigDocsHandler: GetConfigDocsHandlerFunc(func(params GetConfigDocsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetConfigDocs has not yet been implemented")
-		}),
 		GetHealthHandler: GetHealthHandlerFunc(func(params GetHealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetHealth has not yet been implemented")
 		}),
-		GetNoteDetailsByIDHandler: GetNoteDetailsByIDHandlerFunc(func(params GetNoteDetailsByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetNoteDetailsByID has not yet been implemented")
-		}),
-		GetRenderedConfigDocsHandler: GetRenderedConfigDocsHandlerFunc(func(params GetRenderedConfigDocsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetRenderedConfigDocs has not yet been implemented")
+		GetNoteDetailsHandler: GetNoteDetailsHandlerFunc(func(params GetNoteDetailsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetNoteDetails has not yet been implemented")
 		}),
 		GetSiteStatusesHandler: GetSiteStatusesHandlerFunc(func(params GetSiteStatusesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSiteStatuses has not yet been implemented")
 		}),
-		GetStatusHandler: GetStatusHandlerFunc(func(params GetStatusParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetStatus has not yet been implemented")
-		}),
 		GetVersionsHandler: GetVersionsHandlerFunc(func(params GetVersionsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetVersions has not yet been implemented")
+		}),
+		GetWFActionByIDHandler: GetWFActionByIDHandlerFunc(func(params GetWFActionByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetWFActionByID has not yet been implemented")
+		}),
+		GetWFActionStepByIDHandler: GetWFActionStepByIDHandlerFunc(func(params GetWFActionStepByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetWFActionStepByID has not yet been implemented")
+		}),
+		GetWFActionStepLogsByIDHandler: GetWFActionStepLogsByIDHandlerFunc(func(params GetWFActionStepLogsByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetWFActionStepLogsByID has not yet been implemented")
+		}),
+		GetWFActionValidationByIDHandler: GetWFActionValidationByIDHandlerFunc(func(params GetWFActionValidationByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetWFActionValidationByID has not yet been implemented")
 		}),
 		GetWorkflowByIDHandler: GetWorkflowByIDHandlerFunc(func(params GetWorkflowByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetWorkflowByID has not yet been implemented")
@@ -93,14 +73,26 @@ func NewShipyardAPI(spec *loads.Document) *ShipyardAPI {
 		GetWorkflowsHandler: GetWorkflowsHandlerFunc(func(params GetWorkflowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetWorkflows has not yet been implemented")
 		}),
-		PostApplyManifestHandler: PostApplyManifestHandlerFunc(func(params PostApplyManifestParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostApplyManifest has not yet been implemented")
+		InvokeHelmTestsHandler: InvokeHelmTestsHandlerFunc(func(params InvokeHelmTestsParams) middleware.Responder {
+			return middleware.NotImplemented("operation InvokeHelmTests has not yet been implemented")
 		}),
 		ProbeLivenessHandler: ProbeLivenessHandlerFunc(func(params ProbeLivenessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeLiveness has not yet been implemented")
 		}),
 		ProbeReadinessHandler: ProbeReadinessHandlerFunc(func(params ProbeReadinessParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProbeReadiness has not yet been implemented")
+		}),
+		RetrieveConfigDocsClearTextByCollectionIDHandler: RetrieveConfigDocsClearTextByCollectionIDHandlerFunc(func(params RetrieveConfigDocsClearTextByCollectionIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation RetrieveConfigDocsClearTextByCollectionID has not yet been implemented")
+		}),
+		RetrieveConfigDocsStatusHandler: RetrieveConfigDocsStatusHandlerFunc(func(params RetrieveConfigDocsStatusParams) middleware.Responder {
+			return middleware.NotImplemented("operation RetrieveConfigDocsStatus has not yet been implemented")
+		}),
+		RetrieveRenderedCleartextConfigDocsHandler: RetrieveRenderedCleartextConfigDocsHandlerFunc(func(params RetrieveRenderedCleartextConfigDocsParams) middleware.Responder {
+			return middleware.NotImplemented("operation RetrieveRenderedCleartextConfigDocs has not yet been implemented")
+		}),
+		SendControlToWFActionHandler: SendControlToWFActionHandlerFunc(func(params SendControlToWFActionParams) middleware.Responder {
+			return middleware.NotImplemented("operation SendControlToWFAction has not yet been implemented")
 		}),
 	}
 }
@@ -131,54 +123,48 @@ type ShipyardAPI struct {
 
 	// JSONConsumer registers a consumer for a "application/json" mime type
 	JSONConsumer runtime.Consumer
-	// YamlConsumer registers a consumer for a "application/x-yaml" mime type
-	YamlConsumer runtime.Consumer
 
 	// TxtProducer registers a producer for a "text/plain" mime type
 	TxtProducer runtime.Producer
 
-	// GetActionByActionIDHandler sets the operation handler for the get action by action Id operation
-	GetActionByActionIDHandler GetActionByActionIDHandler
-	// GetActionControlHandler sets the operation handler for the get action control operation
-	GetActionControlHandler GetActionControlHandler
-	// GetActionStepByIDHandler sets the operation handler for the get action step by Id operation
-	GetActionStepByIDHandler GetActionStepByIDHandler
-	// GetActionStepLogsHandler sets the operation handler for the get action step logs operation
-	GetActionStepLogsHandler GetActionStepLogsHandler
-	// GetActionValidationByIDHandler sets the operation handler for the get action validation by Id operation
-	GetActionValidationByIDHandler GetActionValidationByIDHandler
-	// GetActionsHandler sets the operation handler for the get actions operation
-	GetActionsHandler GetActionsHandler
-	// GetCommitConfigDocsHandler sets the operation handler for the get commit config docs operation
-	GetCommitConfigDocsHandler GetCommitConfigDocsHandler
+	// CommitConfigDocsHandler sets the operation handler for the commit config docs operation
+	CommitConfigDocsHandler CommitConfigDocsHandler
 	// GetConfigHandler sets the operation handler for the get config operation
 	GetConfigHandler GetConfigHandler
-	// GetConfigDocByIDHandler sets the operation handler for the get config doc by Id operation
-	GetConfigDocByIDHandler GetConfigDocByIDHandler
-	// GetConfigDocsHandler sets the operation handler for the get config docs operation
-	GetConfigDocsHandler GetConfigDocsHandler
 	// GetHealthHandler sets the operation handler for the get health operation
 	GetHealthHandler GetHealthHandler
-	// GetNoteDetailsByIDHandler sets the operation handler for the get note details by Id operation
-	GetNoteDetailsByIDHandler GetNoteDetailsByIDHandler
-	// GetRenderedConfigDocsHandler sets the operation handler for the get rendered config docs operation
-	GetRenderedConfigDocsHandler GetRenderedConfigDocsHandler
+	// GetNoteDetailsHandler sets the operation handler for the get note details operation
+	GetNoteDetailsHandler GetNoteDetailsHandler
 	// GetSiteStatusesHandler sets the operation handler for the get site statuses operation
 	GetSiteStatusesHandler GetSiteStatusesHandler
-	// GetStatusHandler sets the operation handler for the get status operation
-	GetStatusHandler GetStatusHandler
 	// GetVersionsHandler sets the operation handler for the get versions operation
 	GetVersionsHandler GetVersionsHandler
+	// GetWFActionByIDHandler sets the operation handler for the get w f action by Id operation
+	GetWFActionByIDHandler GetWFActionByIDHandler
+	// GetWFActionStepByIDHandler sets the operation handler for the get w f action step by Id operation
+	GetWFActionStepByIDHandler GetWFActionStepByIDHandler
+	// GetWFActionStepLogsByIDHandler sets the operation handler for the get w f action step logs by Id operation
+	GetWFActionStepLogsByIDHandler GetWFActionStepLogsByIDHandler
+	// GetWFActionValidationByIDHandler sets the operation handler for the get w f action validation by Id operation
+	GetWFActionValidationByIDHandler GetWFActionValidationByIDHandler
 	// GetWorkflowByIDHandler sets the operation handler for the get workflow by Id operation
 	GetWorkflowByIDHandler GetWorkflowByIDHandler
 	// GetWorkflowsHandler sets the operation handler for the get workflows operation
 	GetWorkflowsHandler GetWorkflowsHandler
-	// PostApplyManifestHandler sets the operation handler for the post apply manifest operation
-	PostApplyManifestHandler PostApplyManifestHandler
+	// InvokeHelmTestsHandler sets the operation handler for the invoke helm tests operation
+	InvokeHelmTestsHandler InvokeHelmTestsHandler
 	// ProbeLivenessHandler sets the operation handler for the probe liveness operation
 	ProbeLivenessHandler ProbeLivenessHandler
 	// ProbeReadinessHandler sets the operation handler for the probe readiness operation
 	ProbeReadinessHandler ProbeReadinessHandler
+	// RetrieveConfigDocsClearTextByCollectionIDHandler sets the operation handler for the retrieve config docs clear text by collection Id operation
+	RetrieveConfigDocsClearTextByCollectionIDHandler RetrieveConfigDocsClearTextByCollectionIDHandler
+	// RetrieveConfigDocsStatusHandler sets the operation handler for the retrieve config docs status operation
+	RetrieveConfigDocsStatusHandler RetrieveConfigDocsStatusHandler
+	// RetrieveRenderedCleartextConfigDocsHandler sets the operation handler for the retrieve rendered cleartext config docs operation
+	RetrieveRenderedCleartextConfigDocsHandler RetrieveRenderedCleartextConfigDocsHandler
+	// SendControlToWFActionHandler sets the operation handler for the send control to w f action operation
+	SendControlToWFActionHandler SendControlToWFActionHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -238,76 +224,48 @@ func (o *ShipyardAPI) Validate() error {
 		unregistered = append(unregistered, "JSONConsumer")
 	}
 
-	if o.YamlConsumer == nil {
-		unregistered = append(unregistered, "YamlConsumer")
-	}
-
 	if o.TxtProducer == nil {
 		unregistered = append(unregistered, "TxtProducer")
 	}
 
-	if o.GetActionByActionIDHandler == nil {
-		unregistered = append(unregistered, "GetActionByActionIDHandler")
-	}
-
-	if o.GetActionControlHandler == nil {
-		unregistered = append(unregistered, "GetActionControlHandler")
-	}
-
-	if o.GetActionStepByIDHandler == nil {
-		unregistered = append(unregistered, "GetActionStepByIDHandler")
-	}
-
-	if o.GetActionStepLogsHandler == nil {
-		unregistered = append(unregistered, "GetActionStepLogsHandler")
-	}
-
-	if o.GetActionValidationByIDHandler == nil {
-		unregistered = append(unregistered, "GetActionValidationByIDHandler")
-	}
-
-	if o.GetActionsHandler == nil {
-		unregistered = append(unregistered, "GetActionsHandler")
-	}
-
-	if o.GetCommitConfigDocsHandler == nil {
-		unregistered = append(unregistered, "GetCommitConfigDocsHandler")
+	if o.CommitConfigDocsHandler == nil {
+		unregistered = append(unregistered, "CommitConfigDocsHandler")
 	}
 
 	if o.GetConfigHandler == nil {
 		unregistered = append(unregistered, "GetConfigHandler")
 	}
 
-	if o.GetConfigDocByIDHandler == nil {
-		unregistered = append(unregistered, "GetConfigDocByIDHandler")
-	}
-
-	if o.GetConfigDocsHandler == nil {
-		unregistered = append(unregistered, "GetConfigDocsHandler")
-	}
-
 	if o.GetHealthHandler == nil {
 		unregistered = append(unregistered, "GetHealthHandler")
 	}
 
-	if o.GetNoteDetailsByIDHandler == nil {
-		unregistered = append(unregistered, "GetNoteDetailsByIDHandler")
-	}
-
-	if o.GetRenderedConfigDocsHandler == nil {
-		unregistered = append(unregistered, "GetRenderedConfigDocsHandler")
+	if o.GetNoteDetailsHandler == nil {
+		unregistered = append(unregistered, "GetNoteDetailsHandler")
 	}
 
 	if o.GetSiteStatusesHandler == nil {
 		unregistered = append(unregistered, "GetSiteStatusesHandler")
 	}
 
-	if o.GetStatusHandler == nil {
-		unregistered = append(unregistered, "GetStatusHandler")
-	}
-
 	if o.GetVersionsHandler == nil {
 		unregistered = append(unregistered, "GetVersionsHandler")
+	}
+
+	if o.GetWFActionByIDHandler == nil {
+		unregistered = append(unregistered, "GetWFActionByIDHandler")
+	}
+
+	if o.GetWFActionStepByIDHandler == nil {
+		unregistered = append(unregistered, "GetWFActionStepByIDHandler")
+	}
+
+	if o.GetWFActionStepLogsByIDHandler == nil {
+		unregistered = append(unregistered, "GetWFActionStepLogsByIDHandler")
+	}
+
+	if o.GetWFActionValidationByIDHandler == nil {
+		unregistered = append(unregistered, "GetWFActionValidationByIDHandler")
 	}
 
 	if o.GetWorkflowByIDHandler == nil {
@@ -318,8 +276,8 @@ func (o *ShipyardAPI) Validate() error {
 		unregistered = append(unregistered, "GetWorkflowsHandler")
 	}
 
-	if o.PostApplyManifestHandler == nil {
-		unregistered = append(unregistered, "PostApplyManifestHandler")
+	if o.InvokeHelmTestsHandler == nil {
+		unregistered = append(unregistered, "InvokeHelmTestsHandler")
 	}
 
 	if o.ProbeLivenessHandler == nil {
@@ -328,6 +286,22 @@ func (o *ShipyardAPI) Validate() error {
 
 	if o.ProbeReadinessHandler == nil {
 		unregistered = append(unregistered, "ProbeReadinessHandler")
+	}
+
+	if o.RetrieveConfigDocsClearTextByCollectionIDHandler == nil {
+		unregistered = append(unregistered, "RetrieveConfigDocsClearTextByCollectionIDHandler")
+	}
+
+	if o.RetrieveConfigDocsStatusHandler == nil {
+		unregistered = append(unregistered, "RetrieveConfigDocsStatusHandler")
+	}
+
+	if o.RetrieveRenderedCleartextConfigDocsHandler == nil {
+		unregistered = append(unregistered, "RetrieveRenderedCleartextConfigDocsHandler")
+	}
+
+	if o.SendControlToWFActionHandler == nil {
+		unregistered = append(unregistered, "SendControlToWFActionHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -365,9 +339,6 @@ func (o *ShipyardAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consu
 
 		case "application/json":
 			result["application/json"] = o.JSONConsumer
-
-		case "application/x-yaml":
-			result["application/x-yaml"] = o.YamlConsumer
 
 		}
 
@@ -431,40 +402,10 @@ func (o *ShipyardAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/api/v1.0/actions/{action-id}"] = NewGetActionByActionID(o.context, o.GetActionByActionIDHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/actions/{action-id}/control/{control-verb}"] = NewGetActionControl(o.context, o.GetActionControlHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/actions/{action-id}/steps/{step-id}"] = NewGetActionStepByID(o.context, o.GetActionStepByIDHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/actions/{action-id}/steps/{step-id}/logs"] = NewGetActionStepLogs(o.context, o.GetActionStepLogsHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/actions/{action-id}/validations/{validation-id}"] = NewGetActionValidationByID(o.context, o.GetActionValidationByIDHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/actions"] = NewGetActions(o.context, o.GetActionsHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/commitconfigdocs"] = NewGetCommitConfigDocs(o.context, o.GetCommitConfigDocsHandler)
+	o.handlers["POST"]["/api/v1.0/commitconfigdocs"] = NewCommitConfigDocs(o.context, o.CommitConfigDocsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -474,27 +415,12 @@ func (o *ShipyardAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/api/v1.0/configdocs/{collection-id}"] = NewGetConfigDocByID(o.context, o.GetConfigDocByIDHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/configdocs"] = NewGetConfigDocs(o.context, o.GetConfigDocsHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/api/v1.0/health"] = NewGetHealth(o.context, o.GetHealthHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/api/v1.0/notedetails/{note-id}"] = NewGetNoteDetailsByID(o.context, o.GetNoteDetailsByIDHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/api/v1.0/renderedconfigdocs"] = NewGetRenderedConfigDocs(o.context, o.GetRenderedConfigDocsHandler)
+	o.handlers["GET"]["/api/v1.0/notedetails/{note-id}"] = NewGetNoteDetails(o.context, o.GetNoteDetailsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -504,12 +430,27 @@ func (o *ShipyardAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/api/v1.0/status"] = NewGetStatus(o.context, o.GetStatusHandler)
+	o.handlers["GET"]["/versions"] = NewGetVersions(o.context, o.GetVersionsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/versions"] = NewGetVersions(o.context, o.GetVersionsHandler)
+	o.handlers["GET"]["/api/v1.0/actions/{action-id}"] = NewGetWFActionByID(o.context, o.GetWFActionByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/actions/{action-id}/steps/{step-id}"] = NewGetWFActionStepByID(o.context, o.GetWFActionStepByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/actions/{action-id}/steps/{step-id}/logs"] = NewGetWFActionStepLogsByID(o.context, o.GetWFActionStepLogsByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/actions/{action-id}/validations/{validation-id}"] = NewGetWFActionValidationByID(o.context, o.GetWFActionValidationByIDHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -524,7 +465,7 @@ func (o *ShipyardAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/api/v1.0/apply"] = NewPostApplyManifest(o.context, o.PostApplyManifestHandler)
+	o.handlers["POST"]["/api/v1.0/actions"] = NewInvokeHelmTests(o.context, o.InvokeHelmTestsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -535,6 +476,26 @@ func (o *ShipyardAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/readiness"] = NewProbeReadiness(o.context, o.ProbeReadinessHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/configdocs/{collection-id}"] = NewRetrieveConfigDocsClearTextByCollectionID(o.context, o.RetrieveConfigDocsClearTextByCollectionIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/configdocs"] = NewRetrieveConfigDocsStatus(o.context, o.RetrieveConfigDocsStatusHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/v1.0/renderedconfigdocs"] = NewRetrieveRenderedCleartextConfigDocs(o.context, o.RetrieveRenderedCleartextConfigDocsHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/api/v1.0/actions/{action-id}/control/{control-verb}"] = NewSendControlToWFAction(o.context, o.SendControlToWFActionHandler)
 
 }
 

@@ -31,7 +31,7 @@ func NewGetWorkflowByID(ctx *middleware.Context, handler GetWorkflowByIDHandler)
 
 /*GetWorkflowByID swagger:route GET /api/v1.0/workflows/{workflow-id} getWorkflowById
 
-Returns the '/workflows/{workflow-id}'
+Retrieve the detailed information for a workflow (DAG) from Airflow
 
 */
 type GetWorkflowByID struct {

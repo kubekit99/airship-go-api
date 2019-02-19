@@ -77,13 +77,28 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/actions:
     get:
-      description: Returns the '/actions'
-      operationId: getActions
+      description: List workflow actions invoked by users
+      operationId: getWFActionByUsers
       parameters:
         - $ref: "#/parameters/x-auth-token"
       responses:
         '200':
           $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action
+      operationId: createWFAction
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
         '401':
           $ref: "#/responses/err-no-auth"
         '403':
@@ -92,28 +107,11 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/actions/{action-id}:
     get:
-      description: Returns the '/actions/{action-id}'
-      operationId: getActionByActionId
+      description: Retrieve an action by its id
+      operationId: getWFActionById
       parameters:
         - $ref: "#/parameters/x-auth-token"
         - $ref: "#/parameters/action-id"
-      responses:
-        '200':
-          $ref: "#/responses/response-get-simple"
-        '401':
-          $ref: "#/responses/err-no-auth"
-        '403':
-          $ref: "#/responses/err-forbidden"
-        '500':
-          $ref: "#/responses/err-server-error"
-  /api/v1.0/actions/{action-id}/control/{control-verb}:
-    get:
-      description: Returns the '/actions/{action-id}/control/{control-verb}'
-      operationId: getActionControl
-      parameters:
-        - $ref: "#/parameters/x-auth-token"
-        - $ref: "#/parameters/action-id"
-        - $ref: "#/parameters/control-verb"
       responses:
         '200':
           $ref: "#/responses/response-get-simple"
@@ -125,8 +123,8 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/actions/{action-id}/steps/{step-id}:
     get:
-      description: Returns the '/actions/{action-id}/steps/{step-id}'
-      operationId: getActionStepById
+      description: Retrieve an action step by its id
+      operationId: getWFActionStepById
       parameters:
         - $ref: "#/parameters/x-auth-token"
         - $ref: "#/parameters/action-id"
@@ -142,8 +140,8 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/actions/{action-id}/steps/{step-id}/logs:
     get:
-      description: Returns the '/actions/{action-id}/steps/{step-id}/logs'
-      operationId: getActionStepLogs
+      description: Retrieve logs of an action step by its id
+      operationId: getWFActionStepLogsById
       parameters:
         - $ref: "#/parameters/x-auth-token"
         - $ref: "#/parameters/action-id"
@@ -159,8 +157,8 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/actions/{action-id}/validations/{validation-id}:
     get:
-      description: Returns the '/actions/{action-id}/validations/{validation-id}'
-      operationId: getActionValidationById
+      description: Retrieve an action validation by its id
+      operationId: getWFActionValidationById
       parameters:
         - $ref: "#/parameters/x-auth-token"
         - $ref: "#/parameters/action-id"
@@ -174,10 +172,27 @@ paths:
           $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
+  /api/v1.0/actions/{action-id}/control/{control-verb}:
+    post:
+      description: Send a control to an action
+      operationId: sendControlToWFAction
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/action-id"
+        - $ref: "#/parameters/control-verb"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
   /api/v1.0/configdocs:
     get:
-      description: Returns the '/configdocs'
-      operationId: getConfigDocs
+      description: Retrieve the status of the configdocs
+      operationId: retrieveConfigDocsStatus
       parameters:
         - $ref: "#/parameters/x-auth-token"
       responses:
@@ -190,9 +205,41 @@ paths:
         '500':
           $ref: "#/responses/err-server-error"
   /api/v1.0/configdocs/{collection-id}:
+    post:
+      description: Ingest configuration documents for the site design
+      operationId: ingestConfigDocsForCollectionId
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/collection-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/configdocs/{collection-id}:
     get:
-      description: Returns the '/configdocs/{collection-id}'
-      operationId: getConfigDocById
+      description: Retrieve a collection of configuration documents with redacted secrets
+      operationId: retrieveConfigDocsRedactedByCollectionId
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/collection-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/configdocs/{collection-id}:
+    get:
+      description: Retrieve a collection of configuration documents with cleartext secrets.
+      operationId: retrieveConfigDocsClearTextByCollectionId
       parameters:
         - $ref: "#/parameters/x-auth-token"
         - $ref: "#/parameters/collection-id"
@@ -206,27 +253,26 @@ paths:
         '500':
           $ref: "#/responses/err-server-error"
   /api/v1.0/commitconfigdocs:
-    get:
-      description: Returns the '/commitconfigdocs'
-      operationId: getCommitConfigDocs
+    post:
+      description: Move documents from the Shipyard buffer to the committed documents
+      operationId: commitConfigDocs
       parameters:
         - $ref: "#/parameters/x-auth-token"
       responses:
         '200':
-          $ref: "#/responses/response-get-simple"
+          $ref: "#/responses/response-post-simple"
         '401':
           $ref: "#/responses/err-no-auth"
         '403':
           $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
-  /api/v1.0/notedetails/{note-id}:
+  /api/v1.0/renderedconfigdocs:
     get:
-      description: Returns the '/notedetails/{note-id}'
-      operationId: getNoteDetailsById
+      description: Retrieve the configuration documents rendered by Deckhand into a complete design
+      operationId: retrieveRenderedConfigDocs
       parameters:
         - $ref: "#/parameters/x-auth-token"
-        - $ref: "#/parameters/note-id"
       responses:
         '200':
           $ref: "#/responses/response-get-simple"
@@ -238,8 +284,8 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/renderedconfigdocs:
     get:
-      description: Returns the '/renderedconfigdocs'
-      operationId: getRenderedConfigDocs
+      description: Retrieve the configuration documents with cleartext secrets rendered by Deckhand into a complete design
+      operationId: retrieveRenderedCleartextConfigDocs
       parameters:
         - $ref: "#/parameters/x-auth-token"
       responses:
@@ -253,7 +299,7 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/workflows:
     get:
-      description: Returns the '/workflows'
+      description: Retrieve the list of workflows (DAGs) that have been invoked in Airflow, whether via Shipyard or scheduled
       operationId: getWorkflows
       parameters:
         - $ref: "#/parameters/x-auth-token"
@@ -268,7 +314,7 @@ paths:
           $ref: "#/responses/err-server-error"
   /api/v1.0/workflows/{workflow-id}:
     get:
-      description: Returns the '/workflows/{workflow-id}'
+      description: Retrieve the detailed information for a workflow (DAG) from Airflow
       operationId: getWorkflowById
       parameters:
         - $ref: "#/parameters/x-auth-token"
@@ -282,9 +328,25 @@ paths:
           $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
+  /api/v1.0/notedetails/{note-id}:
+    get:
+      description: Retrieve the details for a note. Further authorization is required depending on the topic of the note
+      operationId: getNoteDetails
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+        - $ref: "#/parameters/note-id"
+      responses:
+        '200':
+          $ref: "#/responses/response-get-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
   /api/v1.0/site_statuses:
     get:
-      description: Returns the '/site_statuses'
+      description: Retrieve the statuses for the site
       operationId: getSiteStatuses
       parameters:
         - $ref: "#/parameters/x-auth-token"
@@ -297,54 +359,94 @@ paths:
           $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
-  /api/v1.0/status:
-    get:
-      description: Returns the status of Tiller
-      operationId: getStatus
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action to deploy the site
+      operationId: createDeploySiteWFAction
       parameters:
         - $ref: "#/parameters/x-auth-token"
       responses:
         '200':
-          $ref: "#/responses/response-get-status"
+          $ref: "#/responses/response-post-simple"
         '401':
           $ref: "#/responses/err-no-auth"
         '403':
           $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
-  /api/v1.0/apply:
+  /api/v1.0/actions:
     post:
-      description: Install or upgrade using an Shipyard manifest
-      operationId: postApplyManifest
-      consumes:
-        - application/json
-        - application/x-yaml
+      description: Create a workflow action to update the site
+      operationId: createUpdateSiteWFAction
       parameters:
         - $ref: "#/parameters/x-auth-token"
-        - $ref: "#/parameters/content-type"
-        - name: request_body
-          in: body
-          description: Body containing the manifest hrefs JSON or YAML and a set of overrides
-          schema:
-            type: object
-            properties:
-              hrefs:
-                type: object
-                description: JSON or YAML representation of the manifest being processed.
-              overrides:
-                type: object
-                description: Set of overrides
       responses:
         '200':
-          $ref: "#/responses/response-post-apply"
-        '400':
-          $ref: "#/responses/err-bad-request"
+          $ref: "#/responses/response-post-simple"
         '401':
           $ref: "#/responses/err-no-auth"
         '403':
           $ref: "#/responses/err-forbidden"
-        '415':
-          $ref: "#/responses/err-unsupported-media-type"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action to update the site software
+      operationId: createUpdateSiteSoftwareWFAction
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action to redeploy target servers
+      operationId: createReployTargetServersWFAction
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action to relabel target nodes
+      operationId: relabelTargetNodes
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
+        '500':
+          $ref: "#/responses/err-server-error"
+  /api/v1.0/actions:
+    post:
+      description: Create a workflow action to invoke Helm tests on all releases or a targeted release
+      operationId: invokeHelmTests
+      parameters:
+        - $ref: "#/parameters/x-auth-token"
+      responses:
+        '200':
+          $ref: "#/responses/response-post-simple"
+        '401':
+          $ref: "#/responses/err-no-auth"
+        '403':
+          $ref: "#/responses/err-forbidden"
         '500':
           $ref: "#/responses/err-server-error"
 parameters:
@@ -439,6 +541,12 @@ responses:
           state: True
           version: 0.1.0
   response-get-simple:
+    description: Generic String answer
+    schema:
+      type: string
+      example:
+          "simple"
+  response-post-simple:
     description: Generic String answer
     schema:
       type: string

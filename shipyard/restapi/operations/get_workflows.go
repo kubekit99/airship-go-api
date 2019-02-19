@@ -31,7 +31,7 @@ func NewGetWorkflows(ctx *middleware.Context, handler GetWorkflowsHandler) *GetW
 
 /*GetWorkflows swagger:route GET /api/v1.0/workflows getWorkflows
 
-Returns the '/workflows'
+Retrieve the list of workflows (DAGs) that have been invoked in Airflow, whether via Shipyard or scheduled
 
 */
 type GetWorkflows struct {

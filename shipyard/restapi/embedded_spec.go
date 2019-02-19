@@ -41,9 +41,9 @@ func init() {
   "basePath": "/",
   "paths": {
     "/api/v1.0/actions": {
-      "get": {
-        "description": "Returns the '/actions'",
-        "operationId": "getActions",
+      "post": {
+        "description": "Create a workflow action to invoke Helm tests on all releases or a targeted release",
+        "operationId": "invokeHelmTests",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -51,7 +51,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/response-get-simple"
+            "$ref": "#/responses/response-post-simple"
           },
           "401": {
             "$ref": "#/responses/err-no-auth"
@@ -67,8 +67,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}'",
-        "operationId": "getActionByActionId",
+        "description": "Retrieve an action by its id",
+        "operationId": "getWFActionById",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -94,9 +94,9 @@ func init() {
       }
     },
     "/api/v1.0/actions/{action-id}/control/{control-verb}": {
-      "get": {
-        "description": "Returns the '/actions/{action-id}/control/{control-verb}'",
-        "operationId": "getActionControl",
+      "post": {
+        "description": "Send a control to an action",
+        "operationId": "sendControlToWFAction",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -110,7 +110,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/response-get-simple"
+            "$ref": "#/responses/response-post-simple"
           },
           "401": {
             "$ref": "#/responses/err-no-auth"
@@ -126,8 +126,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/steps/{step-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/steps/{step-id}'",
-        "operationId": "getActionStepById",
+        "description": "Retrieve an action step by its id",
+        "operationId": "getWFActionStepById",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -157,8 +157,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/steps/{step-id}/logs": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/steps/{step-id}/logs'",
-        "operationId": "getActionStepLogs",
+        "description": "Retrieve logs of an action step by its id",
+        "operationId": "getWFActionStepLogsById",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -188,8 +188,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/validations/{validation-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/validations/{validation-id}'",
-        "operationId": "getActionValidationById",
+        "description": "Retrieve an action validation by its id",
+        "operationId": "getWFActionValidationById",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -217,66 +217,10 @@ func init() {
         }
       }
     },
-    "/api/v1.0/apply": {
-      "post": {
-        "description": "Install or upgrade using an Shipyard manifest",
-        "consumes": [
-          "application/json",
-          "application/x-yaml"
-        ],
-        "operationId": "postApplyManifest",
-        "parameters": [
-          {
-            "$ref": "#/parameters/x-auth-token"
-          },
-          {
-            "$ref": "#/parameters/content-type"
-          },
-          {
-            "description": "Body containing the manifest hrefs JSON or YAML and a set of overrides",
-            "name": "request_body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "hrefs": {
-                  "description": "JSON or YAML representation of the manifest being processed.",
-                  "type": "object"
-                },
-                "overrides": {
-                  "description": "Set of overrides",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/response-post-apply"
-          },
-          "400": {
-            "$ref": "#/responses/err-bad-request"
-          },
-          "401": {
-            "$ref": "#/responses/err-no-auth"
-          },
-          "403": {
-            "$ref": "#/responses/err-forbidden"
-          },
-          "415": {
-            "$ref": "#/responses/err-unsupported-media-type"
-          },
-          "500": {
-            "$ref": "#/responses/err-server-error"
-          }
-        }
-      }
-    },
     "/api/v1.0/commitconfigdocs": {
-      "get": {
-        "description": "Returns the '/commitconfigdocs'",
-        "operationId": "getCommitConfigDocs",
+      "post": {
+        "description": "Move documents from the Shipyard buffer to the committed documents",
+        "operationId": "commitConfigDocs",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -284,7 +228,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/response-get-simple"
+            "$ref": "#/responses/response-post-simple"
           },
           "401": {
             "$ref": "#/responses/err-no-auth"
@@ -300,8 +244,8 @@ func init() {
     },
     "/api/v1.0/configdocs": {
       "get": {
-        "description": "Returns the '/configdocs'",
-        "operationId": "getConfigDocs",
+        "description": "Retrieve the status of the configdocs",
+        "operationId": "retrieveConfigDocsStatus",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -325,8 +269,8 @@ func init() {
     },
     "/api/v1.0/configdocs/{collection-id}": {
       "get": {
-        "description": "Returns the '/configdocs/{collection-id}'",
-        "operationId": "getConfigDocById",
+        "description": "Retrieve a collection of configuration documents with cleartext secrets.",
+        "operationId": "retrieveConfigDocsClearTextByCollectionId",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -378,8 +322,8 @@ func init() {
     },
     "/api/v1.0/notedetails/{note-id}": {
       "get": {
-        "description": "Returns the '/notedetails/{note-id}'",
-        "operationId": "getNoteDetailsById",
+        "description": "Retrieve the details for a note. Further authorization is required depending on the topic of the note",
+        "operationId": "getNoteDetails",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -406,8 +350,8 @@ func init() {
     },
     "/api/v1.0/renderedconfigdocs": {
       "get": {
-        "description": "Returns the '/renderedconfigdocs'",
-        "operationId": "getRenderedConfigDocs",
+        "description": "Retrieve the configuration documents with cleartext secrets rendered by Deckhand into a complete design",
+        "operationId": "retrieveRenderedCleartextConfigDocs",
         "parameters": [
           {
             "$ref": "#/parameters/x-auth-token"
@@ -431,7 +375,7 @@ func init() {
     },
     "/api/v1.0/site_statuses": {
       "get": {
-        "description": "Returns the '/site_statuses'",
+        "description": "Retrieve the statuses for the site",
         "operationId": "getSiteStatuses",
         "parameters": [
           {
@@ -454,34 +398,9 @@ func init() {
         }
       }
     },
-    "/api/v1.0/status": {
-      "get": {
-        "description": "Returns the status of Tiller",
-        "operationId": "getStatus",
-        "parameters": [
-          {
-            "$ref": "#/parameters/x-auth-token"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/response-get-status"
-          },
-          "401": {
-            "$ref": "#/responses/err-no-auth"
-          },
-          "403": {
-            "$ref": "#/responses/err-forbidden"
-          },
-          "500": {
-            "$ref": "#/responses/err-server-error"
-          }
-        }
-      }
-    },
     "/api/v1.0/workflows": {
       "get": {
-        "description": "Returns the '/workflows'",
+        "description": "Retrieve the list of workflows (DAGs) that have been invoked in Airflow, whether via Shipyard or scheduled",
         "operationId": "getWorkflows",
         "parameters": [
           {
@@ -506,7 +425,7 @@ func init() {
     },
     "/api/v1.0/workflows/{workflow-id}": {
       "get": {
-        "description": "Returns the '/workflows/{workflow-id}'",
+        "description": "Retrieve the detailed information for a workflow (DAG) from Airflow",
         "operationId": "getWorkflowById",
         "parameters": [
           {
@@ -845,6 +764,13 @@ func init() {
           }
         ]
       }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
+      }
     }
   }
 }`))
@@ -872,9 +798,9 @@ func init() {
   "basePath": "/",
   "paths": {
     "/api/v1.0/actions": {
-      "get": {
-        "description": "Returns the '/actions'",
-        "operationId": "getActions",
+      "post": {
+        "description": "Create a workflow action to invoke Helm tests on all releases or a targeted release",
+        "operationId": "invokeHelmTests",
         "parameters": [
           {
             "type": "string",
@@ -905,8 +831,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}'",
-        "operationId": "getActionByActionId",
+        "description": "Retrieve an action by its id",
+        "operationId": "getWFActionById",
         "parameters": [
           {
             "type": "string",
@@ -942,9 +868,9 @@ func init() {
       }
     },
     "/api/v1.0/actions/{action-id}/control/{control-verb}": {
-      "get": {
-        "description": "Returns the '/actions/{action-id}/control/{control-verb}'",
-        "operationId": "getActionControl",
+      "post": {
+        "description": "Send a control to an action",
+        "operationId": "sendControlToWFAction",
         "parameters": [
           {
             "type": "string",
@@ -987,8 +913,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/steps/{step-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/steps/{step-id}'",
-        "operationId": "getActionStepById",
+        "description": "Retrieve an action step by its id",
+        "operationId": "getWFActionStepById",
         "parameters": [
           {
             "type": "string",
@@ -1031,8 +957,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/steps/{step-id}/logs": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/steps/{step-id}/logs'",
-        "operationId": "getActionStepLogs",
+        "description": "Retrieve logs of an action step by its id",
+        "operationId": "getWFActionStepLogsById",
         "parameters": [
           {
             "type": "string",
@@ -1075,8 +1001,8 @@ func init() {
     },
     "/api/v1.0/actions/{action-id}/validations/{validation-id}": {
       "get": {
-        "description": "Returns the '/actions/{action-id}/validations/{validation-id}'",
-        "operationId": "getActionValidationById",
+        "description": "Retrieve an action validation by its id",
+        "operationId": "getWFActionValidationById",
         "parameters": [
           {
             "type": "string",
@@ -1117,79 +1043,10 @@ func init() {
         }
       }
     },
-    "/api/v1.0/apply": {
-      "post": {
-        "description": "Install or upgrade using an Shipyard manifest",
-        "consumes": [
-          "application/json",
-          "application/x-yaml"
-        ],
-        "operationId": "postApplyManifest",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "A fernet keystone bearer token used for authentication and authorization",
-            "name": "X-Auth-Token",
-            "in": "header"
-          },
-          {
-            "type": "string",
-            "name": "Content-Type",
-            "in": "header",
-            "required": true
-          },
-          {
-            "description": "Body containing the manifest hrefs JSON or YAML and a set of overrides",
-            "name": "request_body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "hrefs": {
-                  "description": "JSON or YAML representation of the manifest being processed.",
-                  "type": "object"
-                },
-                "overrides": {
-                  "description": "Set of overrides",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Response of application of an Shipyard manifest",
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/definitions/applyresult"
-                }
-              ]
-            }
-          },
-          "400": {
-            "description": "400 Bad request"
-          },
-          "401": {
-            "description": "401 Not authorized"
-          },
-          "403": {
-            "description": "403 Forbidden"
-          },
-          "415": {
-            "description": "415 Unsupported Media Type\n\nMime type needs to be application/json or application/x-yaml.\n"
-          },
-          "500": {
-            "description": "500 Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/v1.0/commitconfigdocs": {
-      "get": {
-        "description": "Returns the '/commitconfigdocs'",
-        "operationId": "getCommitConfigDocs",
+      "post": {
+        "description": "Move documents from the Shipyard buffer to the committed documents",
+        "operationId": "commitConfigDocs",
         "parameters": [
           {
             "type": "string",
@@ -1220,8 +1077,8 @@ func init() {
     },
     "/api/v1.0/configdocs": {
       "get": {
-        "description": "Returns the '/configdocs'",
-        "operationId": "getConfigDocs",
+        "description": "Retrieve the status of the configdocs",
+        "operationId": "retrieveConfigDocsStatus",
         "parameters": [
           {
             "type": "string",
@@ -1252,8 +1109,8 @@ func init() {
     },
     "/api/v1.0/configdocs/{collection-id}": {
       "get": {
-        "description": "Returns the '/configdocs/{collection-id}'",
-        "operationId": "getConfigDocById",
+        "description": "Retrieve a collection of configuration documents with cleartext secrets.",
+        "operationId": "retrieveConfigDocsClearTextByCollectionId",
         "parameters": [
           {
             "type": "string",
@@ -1322,8 +1179,8 @@ func init() {
     },
     "/api/v1.0/notedetails/{note-id}": {
       "get": {
-        "description": "Returns the '/notedetails/{note-id}'",
-        "operationId": "getNoteDetailsById",
+        "description": "Retrieve the details for a note. Further authorization is required depending on the topic of the note",
+        "operationId": "getNoteDetails",
         "parameters": [
           {
             "type": "string",
@@ -1360,8 +1217,8 @@ func init() {
     },
     "/api/v1.0/renderedconfigdocs": {
       "get": {
-        "description": "Returns the '/renderedconfigdocs'",
-        "operationId": "getRenderedConfigDocs",
+        "description": "Retrieve the configuration documents with cleartext secrets rendered by Deckhand into a complete design",
+        "operationId": "retrieveRenderedCleartextConfigDocs",
         "parameters": [
           {
             "type": "string",
@@ -1392,7 +1249,7 @@ func init() {
     },
     "/api/v1.0/site_statuses": {
       "get": {
-        "description": "Returns the '/site_statuses'",
+        "description": "Retrieve the statuses for the site",
         "operationId": "getSiteStatuses",
         "parameters": [
           {
@@ -1422,50 +1279,9 @@ func init() {
         }
       }
     },
-    "/api/v1.0/status": {
-      "get": {
-        "description": "Returns the status of Tiller",
-        "operationId": "getStatus",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "A fernet keystone bearer token used for authentication and authorization",
-            "name": "X-Auth-Token",
-            "in": "header"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Response of Tiller statuses",
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/definitions/status"
-                }
-              ],
-              "example": {
-                "tiller": {
-                  "state": true,
-                  "version": "0.1.0"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "401 Not authorized"
-          },
-          "403": {
-            "description": "403 Forbidden"
-          },
-          "500": {
-            "description": "500 Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/v1.0/workflows": {
       "get": {
-        "description": "Returns the '/workflows'",
+        "description": "Retrieve the list of workflows (DAGs) that have been invoked in Airflow, whether via Shipyard or scheduled",
         "operationId": "getWorkflows",
         "parameters": [
           {
@@ -1497,7 +1313,7 @@ func init() {
     },
     "/api/v1.0/workflows/{workflow-id}": {
       "get": {
-        "description": "Returns the '/workflows/{workflow-id}'",
+        "description": "Retrieve the detailed information for a workflow (DAG) from Airflow",
         "operationId": "getWorkflowById",
         "parameters": [
           {
@@ -1879,6 +1695,13 @@ func init() {
             "$ref": "#/definitions/applyresult"
           }
         ]
+      }
+    },
+    "response-post-simple": {
+      "description": "Generic String answer",
+      "schema": {
+        "type": "string",
+        "example": "simple"
       }
     }
   }
