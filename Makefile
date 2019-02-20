@@ -34,3 +34,19 @@ ifndef GOPATH
 	$(error GOPATH not defined, please define GOPATH. Run "go help gopath" to learn more about GOPATH)
 endif
 	go generate ./shipyard/... ./drydock/... ./armada/... ./deckhand/... ./promenade/...
+
+# Build the docker image
+docker-build:
+	docker build . -f deckhand/Dockerfile -t kubekit99/apisim-deckhand:0.1.0
+	docker build . -f promenade/Dockerfile -t kubekit99/apisim-promenade:0.1.0
+	docker build . -f shipyard/Dockerfile -t kubekit99/apisim-shipyard:0.1.0
+	docker build . -f drydock/Dockerfile -t kubekit99/apisim-drydock:0.1.0
+	docker build . -f armada/Dockerfile -t kubekit99/apisim-armada:0.1.0
+
+# Push the docker image
+docker-push:
+	docker push kubekit99/apisim-deckhand:0.1.0
+	docker push kubekit99/apisim-promenade:0.1.0
+	docker push kubekit99/apisim-shipyard:0.1.0
+	docker push kubekit99/apisim-drydock:0.1.0
+	docker push kubekit99/apisim-armada:0.1.0
