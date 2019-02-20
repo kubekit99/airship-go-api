@@ -10,11 +10,11 @@ test: generate fmt vet
 	go test ./promenade/... -coverprofile promenade.cover.out
 
 health: generate fmt vet
-	go build -o bin/shipyard github.com/kubekit99/airship-go-api/shipyard/
-	go build -o bin/drydock github.com/kubekit99/airship-go-api/drydock/
-	go build -o bin/armada github.com/kubekit99/airship-go-api/armada/
-	go build -o bin/deckhand github.com/kubekit99/airship-go-api/deckhand/
-	go build -o bin/promenade github.com/kubekit99/airship-go-api/promenade/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/shipyard github.com/kubekit99/airship-go-api/shipyard/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/drydock github.com/kubekit99/airship-go-api/drydock/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/armada github.com/kubekit99/airship-go-api/armada/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/deckhand github.com/kubekit99/airship-go-api/deckhand/
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/promenade github.com/kubekit99/airship-go-api/promenade/
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
 run: generate fmt vet
